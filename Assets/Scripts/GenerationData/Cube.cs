@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -52,6 +51,7 @@ namespace GenerationData
 			}
 		}
 
-		public override IEnumerable<Figure> GetFiguresOnDirection() => _parent.GetFiguresByDirection(Сoordinates, Direction);
+		public override IEnumerable<Figure> GetFiguresOnDirection() =>
+			_parent.GetFiguresByDirection(Сoordinates + Direction.ToVector(), Direction);
 	}
 }

@@ -30,11 +30,11 @@ namespace GenerationData
 		public static Quaternion ToQuaternion(this Direction direction) => direction switch
 		{
 			Direction.Up => Quaternion.Euler(270,0,0),
-			Direction.Right => Quaternion.Euler(90,0,0),
-			Direction.Forward => Quaternion.Euler(0,180,0),
+			Direction.Right => Quaternion.Euler(0,90,0),
+			Direction.Forward => Quaternion.Euler(0,0,0),
 			Direction.Down => Quaternion.Euler(90,0,0),
-			Direction.Left => Quaternion.Euler(270,0,0),
-			Direction.Back => Quaternion.Euler(0,0,0),
+			Direction.Left => Quaternion.Euler(0,270,0),
+			Direction.Back => Quaternion.Euler(0,180,0),
 			_ => throw new ArgumentException("Неизвестный Direction"),
 		};
 	}

@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace GenerationData
 {
 	public class FiguresParent
 	{
-		public readonly Figure[,,] Figures;
+		private readonly Figure[,,] _figures;
 
 		public FiguresParent(Figure[,,] figures)
 		{
-			Figures = figures;
+			_figures = figures;
 		}
+
+		public Figure this[int i, int j, int k] => _figures[i, j, k];
+
+		public int GetFiguresCount(int dimension) => _figures.GetLength(dimension);
 
 		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int startPosition, Direction direction)
 		{
@@ -26,14 +29,14 @@ namespace GenerationData
 			{
 				if(convertedDirection[i] == 0) continue;
 			
-				border = convertedDirection[i] == 1 ? Figures.GetLength(i) : -1;
+				border = convertedDirection[i] == 1 ? _figures.GetLength(i) : -1;
 				addedPerIteration = convertedDirection[i];
-				iteratorStartValue = startPosition[i] + addedPerIteration;
+				iteratorStartValue = startPosition[i];
 			}
 
 			for (int i = iteratorStartValue; i != border; i += addedPerIteration)
 			{
-				Figure figureOnDirection = Figures[shift.x, shift.y, shift.z];
+				Figure figureOnDirection = _figures[shift.x, shift.y, shift.z];
 				if (figureOnDirection != null)
 				{
 					figuresOnDirection.Add(figureOnDirection);
@@ -43,6 +46,14 @@ namespace GenerationData
 			}
 
 			return figuresOnDirection;
+		}
+
+		public IEnumerator<Figure> GetEnumerator()
+		{
+			foreach (Figure figure in _figures)
+			{
+				yield return figure;
+			}
 		}
 	}
 }
