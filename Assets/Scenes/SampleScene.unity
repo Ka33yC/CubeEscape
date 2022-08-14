@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &445452655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445452657}
+  - component: {fileID: 445452656}
+  m_Layer: 0
+  m_Name: InputEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &445452656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445452655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b47d685a9064419ba1fcb219532963a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &445452657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445452655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.666634, y: -20.88701, z: -6.90767}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720962885
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fca2474a5bddd04492b8d741e0cf39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeSize: {x: 5, y: 2, z: 2}
+  cubeSize: {x: 4, y: 4, z: 4}
   figurePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
   cameraController: {fileID: 963194229}
 --- !u!1 &963194225
@@ -182,7 +226,6 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -268,19 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60163ab39c6fa26459132366973f82f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputEvents: {fileID: 963194230}
   target: {fileID: 720962886}
-  minSafetyPosition: {x: 5, y: 5, z: 5}
+  minApproximate: 5
   sensitivity: 0.1
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b47d685a9064419ba1fcb219532963a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

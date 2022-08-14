@@ -1,46 +1,63 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class InputEvents : MonoBehaviour
 {
-	private Camera _camera;
 	private Vector3 _startInputMousePosition;
 	private Vector3 _preventFrameMousePosition;
 
 	public Action<Vector3> OnMouseMove;
 	public Action<Vector3> OnTouch;
-	public Action<Ray> RayOnTouch;
+	public Action<float> OnScroll;
+
+	public Vector3 MousePosition
+	{
+		get
+		{
+			Vector3 result = new Vector3(Input.mousePosition.x / Screen.width * 2 - 1,
+				Input.mousePosition.y / Screen.height * 2 - 1);
+			
+			return result;
+		}
+	}
+
+	public static InputEvents Instance { get; private set; }
 
 	private void Awake()
 	{
-		_camera = GetComponent<Camera>();
-		OnTouch += ConvertToRayOnTouch;
+		if (Instance != null)
+		{
+			Destroy(gameObject);
+		}
+		
+		Instance = this;
+		DontDestroyOnLoad(gameObject);
 	}
 
 	private void Update()
 	{
+		Vector3 mousePosition = Input.mousePosition;
+		
 		if (Input.GetMouseButtonDown(0))
 		{
-			_startInputMousePosition = Input.mousePosition;
+			_startInputMousePosition = mousePosition;
 			_preventFrameMousePosition = _startInputMousePosition;
 		}
 
 		if (Input.GetMouseButton(0))
 		{
-			Vector3 mousePosition = Input.mousePosition;
 			OnMouseMove?.Invoke(mousePosition - _preventFrameMousePosition);
 			_preventFrameMousePosition = mousePosition;
 		}
 
-		if (Input.GetMouseButtonUp(0) && _startInputMousePosition == _preventFrameMousePosition)
+		if (Input.GetMouseButtonUp(0) && _startInputMousePosition == mousePosition)
 		{
 			OnTouch?.Invoke(_startInputMousePosition);
 		}
-	}
 
-	private void ConvertToRayOnTouch(Vector3 obj)
-	{
-		RayOnTouch?.Invoke(_camera.ScreenPointToRay(obj));
+		if (Input.mouseScrollDelta != Vector2.zero)
+		{
+			OnScroll?.Invoke(Input.mouseScrollDelta.y);
+		}
 	}
 }

@@ -10,9 +10,15 @@ namespace GenerationData
 		protected readonly FiguresParent _parent;
 		public readonly Vector3Int Сoordinates;
 
+		protected Figure(FiguresParent parent, Vector3Int coordinates)
+		{
+			_parent = parent;
+			Сoordinates = coordinates;
+		}
+
 		public Direction Direction { get; protected set; }
 
-		public Vector3 WorldCoordinates()
+		public Vector3 WorldPosition()
 		{
 			float xCenterCoordinates = - ((float)_parent.GetFiguresCount(0) - 1) / 2;
 			float yCenterCoordinates = - ((float)_parent.GetFiguresCount(1) - 1) / 2;
@@ -20,12 +26,6 @@ namespace GenerationData
 
 			return new Vector3(xCenterCoordinates + Сoordinates.x, 
 				yCenterCoordinates + Сoordinates.y,  zCenterCoordinates + Сoordinates.z);
-		}
-
-		protected Figure(FiguresParent parent, Vector3Int coordinates)
-		{
-			_parent = parent;
-			Сoordinates = coordinates;
 		}
 
 		public abstract void SetRandomDirection(params Direction[] notAvailableDirections);

@@ -11,7 +11,7 @@ public class FigureGameObject : MonoBehaviour
 		set
 		{
 			_figure = value;
-			transform.position += _figure.WorldCoordinates();
+			transform.position = _figure.WorldPosition();
 			transform.rotation = _figure.Direction.ToQuaternion();
 		}
 	}
