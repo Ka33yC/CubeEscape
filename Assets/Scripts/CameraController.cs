@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField, Min(0)] private float minApproximate;
     [SerializeField, Range(0.01f, 1)] private float sensitivity;
+    [SerializeField, Range(0.01f, 10)] private float approximateSensitivity = 1;
     
     private Transform _transform;
     private Camera _camera;
@@ -39,7 +40,7 @@ public class CameraController : MonoBehaviour
         mousePosition.z = 1;
 
         Vector3 lookPoint = _transform.rotation * mousePosition;
-        Vector3 newPosition = _transform.position + lookPoint * (scrollDelta * sensitivity);
+        Vector3 newPosition = _transform.position + lookPoint * (scrollDelta * approximateSensitivity);
         
         _transform.position = newPosition;
     }

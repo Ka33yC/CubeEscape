@@ -10,16 +10,11 @@ public class InputEvents : MonoBehaviour
 	public Action<Vector3> OnTouch;
 	public Action<float> OnScroll;
 
-	public Vector3 MousePosition
-	{
-		get
-		{
-			Vector3 result = new Vector3(Input.mousePosition.x / Screen.width * 2 - 1,
-				Input.mousePosition.y / Screen.height * 2 - 1);
-			
-			return result;
-		}
-	}
+	/// <summary>
+	/// Возвращает позицию мышки на экране в диапазонах [-1; 1] по x и y
+	/// </summary>
+	public Vector3 MousePosition => new Vector3(Input.mousePosition.x / Screen.width * 2 - 1,
+		Input.mousePosition.y / Screen.height * 2 - 1);
 
 	public static InputEvents Instance { get; private set; }
 
