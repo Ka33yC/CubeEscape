@@ -7,7 +7,13 @@ namespace GenerationData
 {
 	public class Cube : Figure
 	{
-		public Cube(FiguresParent parent, Vector3Int coordinates) : base(parent, coordinates)
+		private float _escapeDistance;
+		private float _startSpeed;
+		private float _acceleration;
+		private float _maxSpeed;
+
+		public Cube(FiguresParent parent, Vector3Int coordinates, SpeedParameters speedParameters) : 
+			base(parent, coordinates, speedParameters)
 		{
 		
 		}
@@ -52,6 +58,6 @@ namespace GenerationData
 		}
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>
-			_parent.GetFiguresByDirection(Сoordinates + Direction.ToVector(), Direction);
+			Parent.GetFiguresByDirection(Сoordinates + Direction.ToVector(), Direction);
 	}
 }

@@ -30,7 +30,8 @@ public class CameraController : MonoBehaviour
         Ray ray = _camera.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
-            Debug.Log(raycastHit.collider.name);
+            FigureGameObject figure = raycastHit.collider.GetComponent<FigureGameObject>();
+            figure.Escape();
         }
     }
 
