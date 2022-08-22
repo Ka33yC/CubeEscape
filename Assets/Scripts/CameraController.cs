@@ -1,3 +1,4 @@
+using FigureGameObjects;
 using UnityEngine;
 
 [RequireComponent(typeof(Transform), typeof(Camera))]
@@ -30,7 +31,7 @@ public class CameraController : MonoBehaviour
         Ray ray = _camera.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
-            FigureGameObject figure = raycastHit.collider.GetComponent<FigureGameObject>();
+            CubeGameObject figure = raycastHit.collider.GetComponent<CubeGameObject>();
             figure.Escape();
         }
     }
