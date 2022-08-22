@@ -4,7 +4,6 @@ using System.Linq;
 using GenerationData.States;
 using GenerationData.States.CubeStates;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace GenerationData
@@ -12,17 +11,34 @@ namespace GenerationData
 	[Serializable]
 	public class Cube : Figure
 	{
-		public readonly FigurePhysics FigurePhysics;
-		public readonly CubeStateMachine CubeStateMachine = new CubeStateMachine();
-
 		protected Direction _direction;
+		protected Vector3 _directionVector3;
+		protected Vector3 _position;
+		
+		public readonly FigurePhysics FigurePhysics;
+		public readonly CubeStateMachine CubeStateMachine;
 
-		public Vector3 DirectionVector3 { get; protected set; }
+		public Vector3 DirectionVector3 => _directionVector3;
+
+		public Vector3 Position
+		{
+			get => _position;
+			set
+			{
+				_position = value;
+				OnPositionChanged?.Invoke(_position);
+			}
+		}
+
+		public event Action<Vector3> OnPositionChanged;
 
 		public Cube(FiguresParent parent, Vector3Int startLocalPosition, SpeedParameters speedParameters) : 
 			base(parent, startLocalPosition)
 		{
 			FigurePhysics = new FigurePhysics(speedParameters);
+			CubeStateMachine = new CubeStateMachine(this);
+			
+			Position = StartPosition;
 		}
 
 		public Direction Direction
@@ -31,7 +47,7 @@ namespace GenerationData
 			protected set
 			{
 				_direction = value;
-				DirectionVector3 = _direction.ToVector();
+				_directionVector3 = _direction.ToVector();
 			}
 		}
 
@@ -76,5 +92,49 @@ namespace GenerationData
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>
 			Parent.GetFiguresByDirection(CoordinatesInFiguresParent + Direction.ToVector(), Direction);
+		
+		public void StartMoveForward()
+		{
+			FigurePhysics.SetDefaultNowSpeed();
+			OnFixedUpdate += DoStepOnForwardDirection;
+		}
+
+		private void DoStepOnForwardDirection()
+		{
+			Position += DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
+			FigurePhysics.UpSpeedOnAcceleration();
+		}
+
+		public void StopMoveForward()
+		{
+			OnFixedUpdate -= DoStepOnForwardDirection;
+		}
+
+		public void StartMoveBack()
+		{
+			FigurePhysics.SetDefaultNowSpeed();
+			OnFixedUpdate += DoStepOnBackDirection;
+		}
+
+		private void DoStepOnBackDirection()
+		{
+			Vector3 step = DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
+			Vector3 newPosition = Position - step;
+			float distanceToPosition = (newPosition - StartPosition).magnitude;
+			if (distanceToPosition < step.magnitude)
+			{
+				Position = StartPosition;
+				CubeStateMachine.HandleInput(FigureAction.Idle);
+				return;
+			}
+
+			Position = newPosition;
+			FigurePhysics.UpSpeedOnAcceleration();
+		}
+
+		public void StopMoveBack()
+		{
+			OnFixedUpdate -= DoStepOnBackDirection;
+		}
 	}
 }

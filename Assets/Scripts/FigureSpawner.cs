@@ -1,7 +1,6 @@
 using FigureGameObjects;
 using GenerationData;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class FigureSpawner : MonoBehaviour
 {

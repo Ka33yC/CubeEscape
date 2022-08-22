@@ -1,23 +1,18 @@
 ﻿using System;
+using UnityEngine;
 
 namespace GenerationData.States.CubeStates
 {
 	[Serializable]
 	public class CubeStateMachine
 	{
-		protected State _nowState = new IdleState();
+		protected State _nowState;
+		protected Cube _cube;
 
-		public event Action OnIdleStart;
-		public event Action OnIdleStop;
-		public event Action OnShakeStart;
-		public event Action OnShakeStop;
-		public event Action OnEscapeStart;
-		public event Action OnEscapeStop;
-		public event Action OnReturnStart;
-		public event Action OnReturnStop;
-
-		public CubeStateMachine()
+		public CubeStateMachine(Cube cube)
 		{
+			_cube = cube;
+			_nowState = new IdleState();
 			_nowState.EnterAction(this);
 		}
 		
@@ -31,20 +26,20 @@ namespace GenerationData.States.CubeStates
 			_nowState.EnterAction(this);
 		}
 
-		public void StartIdle() => OnIdleStart?.Invoke();
+		public void StartIdle() => _cube.FigurePhysics.NowSpeed = 0;
 
-		public void StopIdle() => OnIdleStop?.Invoke();
+		public void StopIdle() => Debug.Log("StopIdle");
 
-		public void StartShake() => OnShakeStart?.Invoke();
+		public void StartShake() => Debug.Log("StartShake");
 
-		public void StopShake() => OnShakeStop?.Invoke();
+		public void StopShake() => Debug.Log("StopShake");
 
-		public void StartEscape() => OnEscapeStart?.Invoke();
+		public void StartEscape() => _cube.StartMoveForward();
 
-		public void StopEscape() => OnEscapeStop?.Invoke();
+		public void StopEscape() => _cube.StopMoveForward();
 
-		public void StartReturn() => OnReturnStart?.Invoke();
+		public void StartReturn() => _cube.StartMoveBack();
 
-		public void StopReturn() => OnReturnStop?.Invoke();
+		public void StopReturn() => _cube.StopMoveBack();
 	}
 }

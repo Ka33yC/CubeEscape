@@ -9,20 +9,26 @@ namespace GenerationData
 	{
 		public readonly FiguresParent Parent;
 		public readonly Vector3Int CoordinatesInFiguresParent;
-		public readonly Vector3 StartWorldPosition;
+		public readonly Vector3 StartPosition;
+		public event Action OnFixedUpdate;
 		
 		protected Figure(FiguresParent parent, Vector3Int coordinatesInFiguresParent)
 		{
 			Parent = parent;
 			CoordinatesInFiguresParent = coordinatesInFiguresParent;
-			StartWorldPosition = LocalToWorldPosition(parent, coordinatesInFiguresParent);
+			StartPosition = CoordinatesToWorldPosition(parent, coordinatesInFiguresParent);
 		}
 
 		public abstract void SetRandomDirection(params Direction[] notAvailableDirections);
 
 		public abstract IEnumerable<Figure> GetFiguresOnDirection();
 
-		public static Vector3 LocalToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
+		public virtual void FixedUpdate()
+		{
+			OnFixedUpdate?.Invoke();
+		}
+
+		public static Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
 		{
 			float xCenterCoordinates = - ((float)figuresParent.GetFiguresCount(0) - 1) / 2;
 			float yCenterCoordinates = - ((float)figuresParent.GetFiguresCount(1) - 1) / 2;
