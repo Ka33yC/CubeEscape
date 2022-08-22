@@ -1,15 +1,13 @@
-﻿using GenerationData;
-
-namespace ActionStateMachines.States
+﻿namespace GenerationData.States.CubeStates
 {
-	public class EscapingState : State
+	public class ReturningState : State
 	{
 		public override State HandleInput(FigureAction figureAction)
 		{
 			switch (figureAction)
 			{
-				case FigureAction.Collision:
-					return new ReturningState();
+				case FigureAction.Idle:
+					return new IdleState();
 				default:
 					return this;
 			}
@@ -17,12 +15,12 @@ namespace ActionStateMachines.States
 		
 		public override void EnterAction(CubeStateMachine cube)
 		{
-			cube.StartEscape();
+			cube.StartReturn();
 		}
-		
+
 		public override void ExitAction(CubeStateMachine cube)
 		{
-			cube.StopEscape();
+			cube.StopReturn();
 		}
 	}
 }

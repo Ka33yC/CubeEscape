@@ -16,14 +16,14 @@ namespace GenerationData
 
 		public int GetFiguresCount(int dimension) => _figures.GetLength(dimension);
 
-		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int startPosition, Direction direction)
+		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();
 			if (direction == Direction.None) return figuresOnDirection;
 		
 			int iteratorStartValue = 0, border = 0, addedPerIteration = 0;
 			Vector3Int convertedDirection = direction.ToVector();
-			Vector3Int shift = startPosition;
+			Vector3Int shift = coordinatesInFiguresParent;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -31,7 +31,7 @@ namespace GenerationData
 			
 				border = convertedDirection[i] == 1 ? _figures.GetLength(i) : -1;
 				addedPerIteration = convertedDirection[i];
-				iteratorStartValue = startPosition[i];
+				iteratorStartValue = coordinatesInFiguresParent[i];
 			}
 
 			for (int i = iteratorStartValue; i != border; i += addedPerIteration)

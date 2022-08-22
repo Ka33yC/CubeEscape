@@ -1,4 +1,4 @@
-﻿namespace ActionStateMachines
+﻿namespace GenerationData.States
 {
 	public enum FigureAction
 	{

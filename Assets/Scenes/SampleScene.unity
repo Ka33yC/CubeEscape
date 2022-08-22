@@ -212,12 +212,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeSize: {x: 5, y: 5, z: 5}
-  figurePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
+  cubePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
   cameraController: {fileID: 963194229}
   escapeDistance: 10
-  minSpeed: 2
-  acceleration: 0.05
-  maxSpeed: 10
+  startSpeed: 1.5
+  acceleration: 3
+  maxSpeed: 20
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

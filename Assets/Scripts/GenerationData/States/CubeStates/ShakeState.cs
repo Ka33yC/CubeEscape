@@ -1,13 +1,13 @@
-﻿using GenerationData;
-
-namespace ActionStateMachines.States
+﻿namespace GenerationData.States.CubeStates
 {
-	public class IdleState : State
+	public class ShakingState : State
 	{
 		public override State HandleInput(FigureAction figureAction)
 		{
 			switch (figureAction)
 			{
+				case FigureAction.Idle:
+					return new IdleState();
 				case FigureAction.Collision:
 					return new ShakingState();
 				case FigureAction.Escape:
@@ -19,12 +19,12 @@ namespace ActionStateMachines.States
 		
 		public override void EnterAction(CubeStateMachine cube)
 		{
-			cube.StartIdle();
+			cube.StartShake();
 		}
-
+		
 		public override void ExitAction(CubeStateMachine cube)
 		{
-			cube.StopIdle();
+			cube.StopShake();
 		}
 	}
 }

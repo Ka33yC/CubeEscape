@@ -1,6 +1,6 @@
-﻿using GenerationData;
+﻿using GenerationData.States.CubeStates;
 
-namespace ActionStateMachines.States
+namespace GenerationData.States
 {
 	public abstract class State
 	{

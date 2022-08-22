@@ -1,6 +1,6 @@
 ﻿using System;
-using ActionStateMachines;
 using GenerationData;
+using GenerationData.States;
 using UnityEngine;
 
 namespace FigureGameObjects
@@ -12,9 +12,7 @@ namespace FigureGameObjects
 		private Transform _transform;
 		private Vector3 _startPosition;
 
-		private bool _isEscape;
-
-		public Action OnFixedUpdateCall;
+		public Action OnFixedUpdate;
 	
 		public Cube Cube
 		{
@@ -22,15 +20,9 @@ namespace FigureGameObjects
 			private set
 			{
 				_cube = value;
-				_startPosition = Figure.LocalToWorldPosition(_cube.Parent, _cube.Position);
-				transform.position = _startPosition;
+				transform.position = value.StartWorldPosition;
 				transform.rotation = _cube.Direction.ToQuaternion();
 
-				_cube.CubeStateMachine.OnEscapeStart += StartMoveForward;
-				_cube.CubeStateMachine.OnEscapeStop += StopMoveForward;
-				
-				_cube.CubeStateMachine.OnReturnStart += StartMoveBack;
-				_cube.CubeStateMachine.OnReturnStop += StopMoveBack;
 			}
 		}
 
@@ -41,7 +33,7 @@ namespace FigureGameObjects
 
 		private void FixedUpdate()
 		{
-			OnFixedUpdateCall?.Invoke();
+			OnFixedUpdate?.Invoke();
 		}
 
 		private void OnCollisionEnter(Collision collision)
@@ -52,60 +44,63 @@ namespace FigureGameObjects
 			_cube.CubeStateMachine.HandleInput(FigureAction.Collision);
 		}
 
-		public override void Escape()
-		{
-			_cube.CubeStateMachine.HandleInput(FigureAction.Escape);
-		}
+		public override void Escape() => _cube.CubeStateMachine.HandleInput(FigureAction.Escape);
 
 		public override void Initialize(Figure cube)
 		{
 			Cube = (Cube)cube;
+			
+			Cube.CubeStateMachine.OnIdleStart += () => Cube.FigurePhysics.NowSpeed = 0;
+			
+			Cube.CubeStateMachine.OnEscapeStart += StartMoveForward;
+			Cube.CubeStateMachine.OnEscapeStop += StopMoveForward;
+				
+			Cube.CubeStateMachine.OnReturnStart += StartMoveBack;
+			Cube.CubeStateMachine.OnReturnStop += StopMoveBack;
 		}
 
 		private void StartMoveForward()
 		{
-			_cube.SetDefaultNowSpeed();
-			OnFixedUpdateCall += DoStepOnForwardDirection;
+			Cube.FigurePhysics.SetDefaultNowSpeed();
+			OnFixedUpdate += DoStepOnForwardDirection;
 		}
 
 		private void StopMoveForward()
 		{
-			OnFixedUpdateCall -= DoStepOnForwardDirection;
-			_cube.NowSpeed = 0;
+			OnFixedUpdate -= DoStepOnForwardDirection;
 		}
 
 		private void DoStepOnForwardDirection()
 		{
-			_transform.position += _cube.DirectionVector3 * Cube.NowSpeed;
-			_cube.UpSpeedOnAcceleration();
+			_transform.position += Cube.DirectionVector3 * (Cube.FigurePhysics.NowSpeed * Time.fixedDeltaTime);
+			Cube.FigurePhysics.UpSpeedOnAcceleration();
 		}
 
 		private void StartMoveBack()
 		{
-			_cube.SetDefaultNowSpeed();
-			OnFixedUpdateCall += DoStepOnBackDirection;
+			Cube.FigurePhysics.SetDefaultNowSpeed();
+			OnFixedUpdate += DoStepOnBackDirection;
 		}
 
 		private void StopMoveBack()
 		{
-			OnFixedUpdateCall -= DoStepOnBackDirection;
-			_cube.NowSpeed = 0;
+			OnFixedUpdate -= DoStepOnBackDirection;
 		}
 
 		private void DoStepOnBackDirection()
 		{
-			Vector3 step = _cube.DirectionVector3 * Cube.NowSpeed;
+			Vector3 step = Cube.DirectionVector3 * (Cube.FigurePhysics.NowSpeed * Time.fixedDeltaTime);
 			Vector3 newPosition = _transform.position - step;
-			float distanceToPosition = (newPosition - _startPosition).magnitude;
+			float distanceToPosition = (newPosition - Cube.StartWorldPosition).magnitude;
 			if (distanceToPosition < step.magnitude)
 			{
-				_transform.position = _startPosition;
-				_cube.CubeStateMachine.HandleInput(FigureAction.Idle);
+				_transform.position = Cube.StartWorldPosition;
+				Cube.CubeStateMachine.HandleInput(FigureAction.Idle);
 				return;
 			}
 
 			_transform.position = newPosition;
-			_cube.UpSpeedOnAcceleration();
+			Cube.FigurePhysics.UpSpeedOnAcceleration();
 		}
 	}
 }

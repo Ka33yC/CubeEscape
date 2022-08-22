@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace ActionStateMachines.States
+namespace GenerationData.States.CubeStates
 {
+	[Serializable]
 	public class CubeStateMachine
 	{
-		
 		protected State _nowState = new IdleState();
 
 		public event Action OnIdleStart;
@@ -18,7 +18,6 @@ namespace ActionStateMachines.States
 
 		public CubeStateMachine()
 		{
-			
 			_nowState.EnterAction(this);
 		}
 		

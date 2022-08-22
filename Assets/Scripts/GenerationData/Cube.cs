@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ActionStateMachines;
-using ActionStateMachines.States;
+using GenerationData.States;
+using GenerationData.States.CubeStates;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace GenerationData
 {
+	[Serializable]
 	public class Cube : Figure
 	{
-		public readonly SpeedParameters SpeedParameters;
+		public readonly FigurePhysics FigurePhysics;
 		public readonly CubeStateMachine CubeStateMachine = new CubeStateMachine();
 
 		protected Direction _direction;
-		protected float _nowSpeed;
 
 		public Vector3 DirectionVector3 { get; protected set; }
 
-		public Cube(FiguresParent parent, Vector3Int coordinates, SpeedParameters speedParameters) : 
-			base(parent, coordinates)
+		public Cube(FiguresParent parent, Vector3Int startLocalPosition, SpeedParameters speedParameters) : 
+			base(parent, startLocalPosition)
 		{
-			SpeedParameters = speedParameters;
+			FigurePhysics = new FigurePhysics(speedParameters);
 		}
 
 		public Direction Direction
@@ -31,23 +32,6 @@ namespace GenerationData
 			{
 				_direction = value;
 				DirectionVector3 = _direction.ToVector();
-			}
-		}
-		
-		public float NowSpeed
-		{
-			get => _nowSpeed;
-			set
-			{
-				_nowSpeed = value;
-				if (_nowSpeed > SpeedParameters.MaxSpeedPerPhysicsFrame)
-				{
-					_nowSpeed = SpeedParameters.MaxSpeedPerPhysicsFrame;
-				}
-				else if (_nowSpeed < 0)
-				{
-					_nowSpeed = 0;
-				}
 			}
 		}
 
@@ -91,10 +75,6 @@ namespace GenerationData
 		}
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>
-			Parent.GetFiguresByDirection(Position + Direction.ToVector(), Direction);
-		
-		public void UpSpeedOnAcceleration() => NowSpeed += SpeedParameters.AccelerationPerPhysicsFrame;
-		
-		public void SetDefaultNowSpeed() => NowSpeed = SpeedParameters.MinSpeedPerPhysicsFrame;
+			Parent.GetFiguresByDirection(CoordinatesInFiguresParent + Direction.ToVector(), Direction);
 	}
 }
