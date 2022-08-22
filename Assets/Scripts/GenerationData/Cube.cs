@@ -13,24 +13,14 @@ namespace GenerationData
 	{
 		protected Direction _direction;
 		protected Vector3 _directionVector3;
-		protected Vector3 _position;
 		
 		public readonly FigurePhysics FigurePhysics;
 		public readonly CubeStateMachine CubeStateMachine;
 
 		public Vector3 DirectionVector3 => _directionVector3;
 
-		public Vector3 Position
-		{
-			get => _position;
-			set
-			{
-				_position = value;
-				OnPositionChanged?.Invoke(_position);
-			}
-		}
+		
 
-		public event Action<Vector3> OnPositionChanged;
 
 		public Cube(FiguresParent parent, Vector3Int startLocalPosition, SpeedParameters speedParameters) : 
 			base(parent, startLocalPosition)
@@ -38,7 +28,7 @@ namespace GenerationData
 			FigurePhysics = new FigurePhysics(speedParameters);
 			CubeStateMachine = new CubeStateMachine(this);
 			
-			Position = StartPosition;
+			FigurePhysics.Position = StartPosition;
 		}
 
 		public Direction Direction
@@ -101,7 +91,7 @@ namespace GenerationData
 
 		private void DoStepOnForwardDirection()
 		{
-			Position += DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
+			FigurePhysics.Position += DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
 			FigurePhysics.UpSpeedOnAcceleration();
 		}
 
@@ -119,16 +109,16 @@ namespace GenerationData
 		private void DoStepOnBackDirection()
 		{
 			Vector3 step = DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
-			Vector3 newPosition = Position - step;
+			Vector3 newPosition = FigurePhysics.Position - step;
 			float distanceToPosition = (newPosition - StartPosition).magnitude;
 			if (distanceToPosition < step.magnitude)
 			{
-				Position = StartPosition;
+				FigurePhysics.Position = StartPosition;
 				CubeStateMachine.HandleInput(FigureAction.Idle);
 				return;
 			}
 
-			Position = newPosition;
+			FigurePhysics.Position = newPosition;
 			FigurePhysics.UpSpeedOnAcceleration();
 		}
 

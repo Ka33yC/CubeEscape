@@ -21,7 +21,7 @@ namespace FigureGameObjects
 				transform.position = value.StartPosition;
 				transform.rotation = _cube.Direction.ToQuaternion();
 				
-				_cube.OnPositionChanged += newPosition => _transform.position = newPosition;
+				_cube.FigurePhysics.OnPositionChanged += newPosition => _transform.position = newPosition;
 			}
 		}
 
@@ -45,9 +45,6 @@ namespace FigureGameObjects
 
 		public override void Escape() => _cube.CubeStateMachine.HandleInput(FigureAction.Escape);
 
-		public override void Initialize(Figure cube)
-		{
-			Cube = (Cube)cube;
-		}
+		public override void Initialize(Figure cube) => Cube = (Cube)cube;
 	}
 }

@@ -8,10 +8,23 @@ namespace GenerationData
 	{
 		public readonly SpeedParameters SpeedParameters;
 		protected float _nowSpeed;
+		protected Vector3 _position;
+		
+		public event Action<Vector3> OnPositionChanged;
 		
 		public FigurePhysics(SpeedParameters speedParameters)
 		{
 			SpeedParameters = speedParameters;
+		}
+		
+		public Vector3 Position
+		{
+			get => _position;
+			set
+			{
+				_position = value;
+				OnPositionChanged?.Invoke(_position);
+			}
 		}
 		
 		public float NowSpeed
