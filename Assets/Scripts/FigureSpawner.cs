@@ -8,12 +8,7 @@ public class FigureSpawner : MonoBehaviour
     [SerializeField] private CubeGameObject cubePrefab;
     // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
     [SerializeField] private CameraController cameraController;
-    
-    [Header("Figure Speed Settings")]
-    [SerializeField, Min(0)] private float escapeDistance = 10;
-    [SerializeField, Min(0)] private float startSpeed = 1;
-    [SerializeField, Min(0)] private float acceleration = 0.5f; 
-    [SerializeField, Min(0)] private float maxSpeed = 10;
+    [SerializeField] private SpeedParameters speedParameters;
     
     private FiguresParent _figuresParent;
     
@@ -22,7 +17,6 @@ public class FigureSpawner : MonoBehaviour
         int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
         Figure[,,] figures = new Figure[x, y, z];
         _figuresParent = new FiguresParent(figures);
-        SpeedParameters speedParameters = new SpeedParameters(escapeDistance, startSpeed, acceleration, maxSpeed);
 
         for (int i = 0; i < x; i++)
         {
@@ -30,7 +24,7 @@ public class FigureSpawner : MonoBehaviour
             {
                 for (int k = 0; k < z; k++)
                 {
-                    Cube cube = new Cube(_figuresParent, new Vector3Int(i, j, k), speedParameters);
+                    Cube cube = new Cube(_figuresParent, new Vector3Int(i, j, k));
                     figures[i, j, k] = cube;
                     cube.SetRandomDirection();
                 }
@@ -42,7 +36,7 @@ public class FigureSpawner : MonoBehaviour
     {
         foreach (Figure figure in _figuresParent)
         {
-            Instantiate(cubePrefab, transform).Initialize(figure);
+            Instantiate(cubePrefab, transform).Initialize(figure, speedParameters);
         }
         
         cameraController.SetSafetyPosition(cubeSize);

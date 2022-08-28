@@ -10,7 +10,6 @@ namespace GenerationData
 		public readonly FiguresParent Parent;
 		public readonly Vector3Int CoordinatesInFiguresParent;
 		public readonly Vector3 StartPosition;
-		public event Action OnFixedUpdate;
 		
 		protected Figure(FiguresParent parent, Vector3Int coordinatesInFiguresParent)
 		{
@@ -22,11 +21,6 @@ namespace GenerationData
 		public abstract void SetRandomDirection(params Direction[] notAvailableDirections);
 
 		public abstract IEnumerable<Figure> GetFiguresOnDirection();
-
-		public virtual void FixedUpdate()
-		{
-			OnFixedUpdate?.Invoke();
-		}
 
 		public static Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
 		{

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GenerationData.States;
-using GenerationData.States.CubeStates;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,21 +12,12 @@ namespace GenerationData
 		protected Direction _direction;
 		protected Vector3 _directionVector3;
 		
-		public readonly FigurePhysics FigurePhysics;
-		public readonly CubeStateMachine CubeStateMachine;
-
 		public Vector3 DirectionVector3 => _directionVector3;
-
 		
-
-
-		public Cube(FiguresParent parent, Vector3Int startLocalPosition, SpeedParameters speedParameters) : 
+		public Cube(FiguresParent parent, Vector3Int startLocalPosition) : 
 			base(parent, startLocalPosition)
 		{
-			FigurePhysics = new FigurePhysics(speedParameters);
-			CubeStateMachine = new CubeStateMachine(this);
 			
-			FigurePhysics.Position = StartPosition;
 		}
 
 		public Direction Direction
@@ -82,49 +71,5 @@ namespace GenerationData
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>
 			Parent.GetFiguresByDirection(CoordinatesInFiguresParent + Direction.ToVector(), Direction);
-		
-		public void StartMoveForward()
-		{
-			FigurePhysics.SetDefaultNowSpeed();
-			OnFixedUpdate += DoStepOnForwardDirection;
-		}
-
-		private void DoStepOnForwardDirection()
-		{
-			FigurePhysics.Position += DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
-			FigurePhysics.UpSpeedOnAcceleration();
-		}
-
-		public void StopMoveForward()
-		{
-			OnFixedUpdate -= DoStepOnForwardDirection;
-		}
-
-		public void StartMoveBack()
-		{
-			FigurePhysics.SetDefaultNowSpeed();
-			OnFixedUpdate += DoStepOnBackDirection;
-		}
-
-		private void DoStepOnBackDirection()
-		{
-			Vector3 step = DirectionVector3 * (FigurePhysics.NowSpeed * Time.fixedDeltaTime);
-			Vector3 newPosition = FigurePhysics.Position - step;
-			float distanceToPosition = (newPosition - StartPosition).magnitude;
-			if (distanceToPosition < step.magnitude)
-			{
-				FigurePhysics.Position = StartPosition;
-				CubeStateMachine.HandleInput(FigureAction.Idle);
-				return;
-			}
-
-			FigurePhysics.Position = newPosition;
-			FigurePhysics.UpSpeedOnAcceleration();
-		}
-
-		public void StopMoveBack()
-		{
-			OnFixedUpdate -= DoStepOnBackDirection;
-		}
 	}
 }

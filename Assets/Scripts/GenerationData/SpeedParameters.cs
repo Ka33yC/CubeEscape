@@ -1,23 +1,18 @@
-﻿using System;
+﻿using UnityEngine;
 
 namespace GenerationData
 {
-	[Serializable]
-	public class SpeedParameters
+	[CreateAssetMenu (fileName = "New Speed Parameters", menuName = "Create SpeedParameters")]
+	public class SpeedParameters : ScriptableObject
 	{
-		public readonly float EscapeDistance;
+		[SerializeField] private float escapeDistance;
+		[SerializeField] private float startSpeed;
+		[SerializeField] private float acceleration;
+		[SerializeField] private float maxSpeed;
 		
-		public readonly float StartSpeed;
-		public readonly float Acceleration;
-		public readonly float MaxSpeed;
-
-		
-		public SpeedParameters(float escapeDistance, float minSpeed, float acceleration, float maxSpeed)
-		{
-			EscapeDistance = escapeDistance;
-			StartSpeed = minSpeed;
-			Acceleration = acceleration;
-			MaxSpeed = maxSpeed;
-		}
+		public float EscapeDistance => escapeDistance;
+		public float StartSpeed => startSpeed;
+		public float Acceleration => acceleration;
+		public float MaxSpeed => maxSpeed;
 	}
 }

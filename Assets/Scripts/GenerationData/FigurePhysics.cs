@@ -7,24 +7,11 @@ namespace GenerationData
 	public class FigurePhysics
 	{
 		public readonly SpeedParameters SpeedParameters;
-		protected float _nowSpeed;
-		protected Vector3 _position;
-		
-		public event Action<Vector3> OnPositionChanged;
+		private float _nowSpeed;
 		
 		public FigurePhysics(SpeedParameters speedParameters)
 		{
 			SpeedParameters = speedParameters;
-		}
-		
-		public Vector3 Position
-		{
-			get => _position;
-			set
-			{
-				_position = value;
-				OnPositionChanged?.Invoke(_position);
-			}
 		}
 		
 		public float NowSpeed
@@ -44,7 +31,7 @@ namespace GenerationData
 			}
 		}
 		
-		public void SetDefaultNowSpeed() => NowSpeed = SpeedParameters.StartSpeed;
+		public void SetNowSpeedToStart() => NowSpeed = SpeedParameters.StartSpeed;
 
 		public void UpSpeedOnAcceleration() =>
 			NowSpeed += NowSpeed * SpeedParameters.Acceleration * Time.fixedDeltaTime;

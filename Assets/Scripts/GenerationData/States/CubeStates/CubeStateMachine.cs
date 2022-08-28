@@ -1,4 +1,5 @@
 ﻿using System;
+using FigureGameObjects;
 using UnityEngine;
 
 namespace GenerationData.States.CubeStates
@@ -7,11 +8,11 @@ namespace GenerationData.States.CubeStates
 	public class CubeStateMachine
 	{
 		protected State _nowState;
-		protected Cube _cube;
+		protected CubeGameObject _cubeGameObject;
 
-		public CubeStateMachine(Cube cube)
+		public CubeStateMachine(CubeGameObject cubeGameObject)
 		{
-			_cube = cube;
+			_cubeGameObject = cubeGameObject;
 			_nowState = new IdleState();
 			_nowState.EnterAction(this);
 		}
@@ -26,7 +27,7 @@ namespace GenerationData.States.CubeStates
 			_nowState.EnterAction(this);
 		}
 
-		public void StartIdle() => _cube.FigurePhysics.NowSpeed = 0;
+		public void StartIdle() => _cubeGameObject.StartIdleInBaseState();
 
 		public void StopIdle() => Debug.Log("StopIdle");
 
@@ -34,12 +35,12 @@ namespace GenerationData.States.CubeStates
 
 		public void StopShake() => Debug.Log("StopShake");
 
-		public void StartEscape() => _cube.StartMoveForward();
+		public void StartEscape() => _cubeGameObject.StartMoveForward();
 
-		public void StopEscape() => _cube.StopMoveForward();
+		public void StopEscape() => _cubeGameObject.StopMoveForward();
 
-		public void StartReturn() => _cube.StartMoveBack();
+		public void StartReturn() => _cubeGameObject.StartMoveBack();
 
-		public void StopReturn() => _cube.StopMoveBack();
+		public void StopReturn() => _cubeGameObject.StopMoveBack();
 	}
 }
