@@ -9,10 +9,10 @@ namespace FigureGameObjects
 	[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 	public class CubeGameObject : FigureGameObject
 	{
-		private Cube _cube;
 		private Transform _transform;
 		private Vector3 _startPosition;
 		
+		private Cube _cube;
 		private FigurePhysics _figurePhysics;
 		private CubeStateMachine _cubeStateMachine;
 
