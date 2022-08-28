@@ -10,7 +10,9 @@ namespace GenerationData
 		public readonly FiguresParent Parent;
 		public readonly Vector3Int CoordinatesInFiguresParent;
 		public readonly Vector3 StartPosition;
-		
+
+		public bool IsKnockedOut { get; private set; }
+
 		protected Figure(FiguresParent parent, Vector3Int coordinatesInFiguresParent)
 		{
 			Parent = parent;
@@ -31,5 +33,7 @@ namespace GenerationData
 			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
 				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
+
+		public virtual void KnockOut() => IsKnockedOut = true;
 	}
 }

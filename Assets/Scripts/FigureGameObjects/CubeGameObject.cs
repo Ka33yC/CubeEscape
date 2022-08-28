@@ -9,6 +9,8 @@ namespace FigureGameObjects
 	[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 	public class CubeGameObject : FigureGameObject
 	{
+		[SerializeField] private SpeedParameters speedParameters;
+		
 		private Transform _transform;
 		private Vector3 _startPosition;
 		
@@ -34,6 +36,12 @@ namespace FigureGameObjects
 			_transform = GetComponent<Transform>();
 		}
 
+		private void Start()
+		{
+			_figurePhysics = new FigurePhysics(speedParameters);
+			_cubeStateMachine = new CubeStateMachine(this);
+		}
+
 		private void FixedUpdate()
 		{
 			OnFixedUpdate?.Invoke();
@@ -49,11 +57,9 @@ namespace FigureGameObjects
 
 		public override void Escape() => _cubeStateMachine.HandleInput(FigureAction.Escape);
 
-		public override void Initialize(Figure cube, SpeedParameters speedParameters)
+		public override void Initialize(Figure cube)
 		{
 			Cube = (Cube)cube;
-			_figurePhysics = new FigurePhysics(speedParameters);
-			_cubeStateMachine = new CubeStateMachine(this);
 		}
 
 		public void StartIdleInBaseState()

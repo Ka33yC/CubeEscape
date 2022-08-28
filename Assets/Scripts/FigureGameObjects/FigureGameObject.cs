@@ -5,7 +5,7 @@ namespace FigureGameObjects
 {
 	public abstract class FigureGameObject : MonoBehaviour
 	{
-		public abstract void Initialize(Figure figure, SpeedParameters speedParameters);
+		public abstract void Initialize(Figure figure);
 
 		public virtual void Escape()
 		{

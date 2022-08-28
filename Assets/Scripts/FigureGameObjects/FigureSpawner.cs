@@ -8,7 +8,6 @@ public class FigureSpawner : MonoBehaviour
     [SerializeField] private CubeGameObject cubePrefab;
     // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
     [SerializeField] private CameraController cameraController;
-    [SerializeField] private SpeedParameters speedParameters;
     
     private FiguresParent _figuresParent;
     
@@ -36,7 +35,7 @@ public class FigureSpawner : MonoBehaviour
     {
         foreach (Figure figure in _figuresParent)
         {
-            Instantiate(cubePrefab, transform).Initialize(figure, speedParameters);
+            Instantiate(cubePrefab, transform).Initialize(figure);
         }
         
         cameraController.SetSafetyPosition(cubeSize);
