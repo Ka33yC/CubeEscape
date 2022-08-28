@@ -1,8 +1,7 @@
 ﻿using System;
-using FigureGameObjects;
 using UnityEngine;
 
-namespace GenerationData.States.CubeStates
+namespace FigureGameObjects.States.CubeStates
 {
 	[Serializable]
 	public class CubeStateMachine

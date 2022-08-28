@@ -1,6 +1,6 @@
-﻿using GenerationData.States.CubeStates;
+﻿using FigureGameObjects.States.CubeStates;
 
-namespace GenerationData.States
+namespace FigureGameObjects.States
 {
 	public abstract class State
 	{

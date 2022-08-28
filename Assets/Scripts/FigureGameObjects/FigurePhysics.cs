@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GenerationData
+namespace FigureGameObjects
 {
 	[Serializable]
 	public class FigurePhysics

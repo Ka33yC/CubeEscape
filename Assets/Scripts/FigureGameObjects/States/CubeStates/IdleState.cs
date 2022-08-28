@@ -1,4 +1,4 @@
-﻿namespace GenerationData.States.CubeStates
+﻿namespace FigureGameObjects.States.CubeStates
 {
 	public class IdleState : State
 	{

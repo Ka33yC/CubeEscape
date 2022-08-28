@@ -1,7 +1,7 @@
 ﻿using System;
+using FigureGameObjects.States;
+using FigureGameObjects.States.CubeStates;
 using GenerationData;
-using GenerationData.States;
-using GenerationData.States.CubeStates;
 using UnityEngine;
 
 namespace FigureGameObjects

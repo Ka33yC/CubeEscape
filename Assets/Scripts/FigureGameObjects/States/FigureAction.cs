@@ -1,4 +1,4 @@
-﻿namespace GenerationData.States
+﻿namespace FigureGameObjects.States
 {
 	public enum FigureAction
 	{
