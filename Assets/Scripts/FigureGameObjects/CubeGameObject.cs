@@ -8,7 +8,7 @@ using UnityEngine;
 namespace FigureGameObjects
 {
 	[RequireComponent(typeof(FigurePhysics), typeof(CubeAnimator))]
-	public class CubeGameObject : FigureGameObject
+	public class CubeGameObject : MonoBehaviour, IFigureGameObject
 	{
 		[SerializeField] private CubeAnimatorParameters cubeAnimatorParameters;
 		
@@ -32,7 +32,7 @@ namespace FigureGameObjects
 		private void Awake()
 		{
 			_figurePhysics = GetComponent<FigurePhysics>();
-			_cubeAnimator = new CubeAnimator(GetComponent<Transform>(), cubeAnimatorParameters);
+			_cubeAnimator = new CubeAnimator(transform, cubeAnimatorParameters);
 			_figurePhysics.OnCollision += Collide;
 		}
 
@@ -41,11 +41,11 @@ namespace FigureGameObjects
 			_cubeStateMachine = new CubeStateMachine(this);
 		}
 
-		public override void Escape() => _cubeStateMachine.HandleInput(FigureAction.Escape);
+		public void Escape() => _cubeStateMachine.HandleInput(FigureAction.Escape);
 		
-		public override void Collide(FigureGameObject collideWith) => _cubeStateMachine.HandleInput(FigureAction.Collision);
+		public void Collide(IFigureGameObject collideWith) => _cubeStateMachine.HandleInput(FigureAction.Collision);
 
-		public override void Initialize(Figure cube)
+		public void Initialize(Figure cube)
 		{
 			Cube = (Cube)cube;
 		}

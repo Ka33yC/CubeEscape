@@ -14,7 +14,7 @@ namespace FigureGameObjects
 		
 		private event Action OnFixedUpdate;
 		public event Action OnPositionReach;
-		public event Action<FigureGameObject> OnCollision;
+		public event Action<IFigureGameObject> OnCollision;
 
 		public float NowSpeed
 		{
@@ -51,7 +51,7 @@ namespace FigureGameObjects
 		
 		private void OnCollisionEnter(Collision collision)
 		{
-			FigureGameObject figureGameObject = collision.collider.GetComponent<FigureGameObject>();
+			IFigureGameObject figureGameObject = collision.collider.GetComponent<IFigureGameObject>();
 			if (figureGameObject == null) return;
 		
 			OnCollision?.Invoke(figureGameObject);
