@@ -7,6 +7,8 @@ namespace FigureGameObjects
 	{
 		public abstract void Initialize(Figure figure);
 
+		public abstract void Collide(FigureGameObject collideWith);
+		
 		public virtual void Escape()
 		{
 			Debug.Log("Escape");

@@ -26,20 +26,20 @@ namespace FigureGameObjects.States.CubeStates
 			_nowState.EnterAction(this);
 		}
 
-		public void StartIdle() => _cubeGameObject.StartIdleInBaseState();
+		public void StartIdle() => _cubeGameObject.StartIdle();
 
 		public void StopIdle() => Debug.Log("StopIdle");
 
-		public void StartShake() => Debug.Log("StartShake");
+		public void StartShake() => _cubeGameObject.PlayShakeAnimation();
 
 		public void StopShake() => Debug.Log("StopShake");
 
 		public void StartEscape() => _cubeGameObject.StartMoveForward();
 
-		public void StopEscape() => _cubeGameObject.StopMoveForward();
+		public void StopEscape() => _cubeGameObject.StopMove();
 
 		public void StartReturn() => _cubeGameObject.StartMoveBack();
 
-		public void StopReturn() => _cubeGameObject.StopMoveBack();
+		public void StopReturn() => _cubeGameObject.StopMove();
 	}
 }
