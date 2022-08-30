@@ -59,7 +59,7 @@ namespace FigureGameObjects
 		
 		public void SetNowSpeedToStart() => NowSpeed = speedParameters.StartSpeed;
 
-		public void UpSpeedOnAcceleration() =>
+		private void UpSpeedOnAcceleration() =>
 			NowSpeed += NowSpeed * speedParameters.Acceleration * Time.fixedDeltaTime;
 		
 		public void StartMoveTo(Vector3 endPosition)

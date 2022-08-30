@@ -2,7 +2,7 @@
 
 namespace FigureGameObjects
 {
-	[CreateAssetMenu (fileName = "New Speed Parameters", menuName = "Create SpeedParameters")]
+	[CreateAssetMenu (fileName = "New SpeedParameters", menuName = "Create SpeedParameters")]
 	public class SpeedParameters : ScriptableObject
 	{
 		[SerializeField] private float startSpeed;

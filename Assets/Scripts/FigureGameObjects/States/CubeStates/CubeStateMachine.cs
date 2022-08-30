@@ -32,7 +32,7 @@ namespace FigureGameObjects.States.CubeStates
 
 		public void StartShake() => _cubeGameObject.PlayShakeAnimation();
 
-		public void StopShake() => Debug.Log("StopShake");
+		public void StopShake() => _cubeGameObject.StopPlayShakeAnimation();
 
 		public void StartEscape() => _cubeGameObject.StartMoveForward();
 

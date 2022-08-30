@@ -1,5 +1,4 @@
-﻿using System;
-using FigureGameObjects.Animations;
+﻿using FigureGameObjects.Animations;
 using FigureGameObjects.States;
 using FigureGameObjects.States.CubeStates;
 using GenerationData;
@@ -11,6 +10,7 @@ namespace FigureGameObjects
 	public class CubeGameObject : MonoBehaviour, IFigureGameObject
 	{
 		[SerializeField] private CubeAnimatorParameters cubeAnimatorParameters;
+		[SerializeField] private Transform cubeMesh;
 		
 		private FigurePhysics _figurePhysics;
 		private CubeAnimator _cubeAnimator;
@@ -32,7 +32,7 @@ namespace FigureGameObjects
 		private void Awake()
 		{
 			_figurePhysics = GetComponent<FigurePhysics>();
-			_cubeAnimator = new CubeAnimator(transform, cubeAnimatorParameters);
+			_cubeAnimator = new CubeAnimator(cubeMesh, cubeAnimatorParameters);
 			_figurePhysics.OnCollision += Collide;
 		}
 
@@ -57,6 +57,8 @@ namespace FigureGameObjects
 		}
 
 		public void PlayShakeAnimation() => _cubeAnimator.PlayShakeAnimation();
+		
+		public void StopPlayShakeAnimation() => _cubeAnimator.StopShakeAnimation();
 		
 		public void StartMoveForward()
 		{

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7394557067271964261}
   - component: {fileID: 2791485059063829050}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: CubeMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,7 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e9ced9becd4e188fcfecb2a99ae513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeAnimatorParameters: {fileID: 0}
+  cubeAnimatorParameters: {fileID: 11400000, guid: b9e76f740123de1448c0ca113721ed87, type: 2}
+  cubeMesh: {fileID: 807822977178726261}
 --- !u!114 &8082176244521536244
 MonoBehaviour:
   m_ObjectHideFlags: 0

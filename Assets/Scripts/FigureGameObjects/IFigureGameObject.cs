@@ -1,5 +1,4 @@
 ﻿using GenerationData;
-using UnityEngine;
 
 namespace FigureGameObjects
 {

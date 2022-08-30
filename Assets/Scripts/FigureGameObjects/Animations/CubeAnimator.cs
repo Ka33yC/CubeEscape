@@ -1,12 +1,14 @@
-﻿using System;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace FigureGameObjects.Animations
 {
 	public class CubeAnimator
 	{
-		private Transform _transform;
-		private CubeAnimatorParameters _animatorParameters;
+		private readonly Transform _transform;
+		private readonly CubeAnimatorParameters _animatorParameters;
+
+		private Sequence _nowAnimation;
 		
 		public CubeAnimator(Transform cubeTransform, CubeAnimatorParameters animatorParameters)
 		{
@@ -16,7 +18,16 @@ namespace FigureGameObjects.Animations
 
 		public void PlayShakeAnimation()
 		{
-			//_transform.
+			_nowAnimation = DOTween.Sequence();
+			_nowAnimation.Append(_transform
+				.DOShakePosition(_animatorParameters.Duration, _animatorParameters.Strength,
+					_animatorParameters.VibratoFrequency)
+				.SetEase(_animatorParameters.ShakeAnimationIntensity));
+		}
+
+		public void StopShakeAnimation()
+		{
+			_nowAnimation.Kill(true);
 		}
 	}
 }
