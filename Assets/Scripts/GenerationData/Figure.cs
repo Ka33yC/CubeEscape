@@ -14,8 +14,6 @@ namespace GenerationData
 
 		public bool IsKnockedOut { get; private set; }
 
-		public IFigureGameObject FigureGameObject;
-
 		protected Figure(FiguresParent parent, Vector3Int coordinatesInFiguresParent)
 		{
 			Parent = parent;

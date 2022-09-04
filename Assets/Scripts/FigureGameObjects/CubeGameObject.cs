@@ -18,8 +18,6 @@ namespace FigureGameObjects
 		private Cube _cube;
 		private CubeStateMachine _cubeStateMachine;
 
-		public Figure Figure => _cube;
-
 		private Cube Cube
 		{
 			get => _cube;

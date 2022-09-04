@@ -44,9 +44,7 @@ namespace FigureGameObjects
         {
             foreach (Figure figure in _figuresParent)
             {
-                IFigureGameObject figureGameObject = Instantiate(cubePrefab, transform);
-                figureGameObject.Initialize(figure);
-                figure.FigureGameObject = figureGameObject;
+                Instantiate(cubePrefab, transform).Initialize(figure);
             }
         
             cameraController.SetSafetyPosition(cubeSize);
