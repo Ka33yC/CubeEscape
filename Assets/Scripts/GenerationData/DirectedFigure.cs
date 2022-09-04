@@ -27,17 +27,6 @@ namespace GenerationData
 		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) : 
 			base(parent, coordinatesInFiguresParent)
 		{
-			StartPosition = CoordinatesToWorldPosition(parent, coordinatesInFiguresParent);
-		}
-		
-		public Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
-		{
-			float xCenterCoordinates = - ((float)figuresParent.Length[0] - 1) / 2;
-			float yCenterCoordinates = - ((float)figuresParent.Length[1] - 1) / 2;
-			float zCenterCoordinates = - ((float)figuresParent.Length[2] - 1) / 2;
-
-			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
-				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
 
 		public override bool SetRandomDirection(params Direction[] notAvailableDirections)
