@@ -17,7 +17,6 @@ namespace FigureGameObjects
         {
             int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
             Figure[,,] figures = new Figure[x, y, z];
-            _figuresParent = new FiguresParent(figures);
 
             for (int i = 0; i < x; i++)
             {
@@ -27,17 +26,11 @@ namespace FigureGameObjects
                     {
                         Cube cube = new Cube(_figuresParent, new Vector3Int(i, j, k));
                         figures[i, j, k] = cube;
-                        if (isDifficult)
-                        {
-                            cube.SetDifficultRandomDirection();
-                        }
-                        else
-                        {
-                            cube.SetRandomDirection();
-                        }
                     }
                 }
             }
+            
+            _figuresParent = new FiguresParent(figures, isDifficult);
         }
 
         private void Start()

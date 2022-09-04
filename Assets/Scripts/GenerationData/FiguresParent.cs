@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GenerationData
@@ -9,7 +10,7 @@ namespace GenerationData
 		
 		public readonly int[] Length;
 
-		public FiguresParent(Figure[,,] figures)
+		public FiguresParent(Figure[,,] figures, bool isDifficult)
 		{
 			_figures = figures;
 			Length = new int[]
@@ -18,6 +19,15 @@ namespace GenerationData
 				_figures.GetLength(1),
 				_figures.GetLength(2),
 			};
+
+			Action<Figure> generationAction = isDifficult
+				? figure => figure.SetDifficultRandomDirection()
+				: figure => figure.SetRandomDirection();
+			
+			foreach (Figure figure in _figures)
+			{
+				generationAction(figure);
+			}
 		}
 
 		public Figure this[int i, int j, int k] => _figures[i, j, k];
