@@ -12,6 +12,7 @@ namespace GenerationData
 		public readonly Vector3Int CoordinatesInFiguresParent;
 
 		public Vector3 StartPosition { get; protected set; }
+		public IFigureGameObject FigureGameObject;
 
 		public bool IsKnockedOut { get; protected set; }
 

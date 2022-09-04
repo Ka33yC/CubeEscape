@@ -24,6 +24,7 @@ namespace FigureGameObjects
 			set
 			{
 				_cube = value;
+				_cube.FigureGameObject = this;
 				transform.position = _cube.StartPosition;
 				transform.rotation = _cube.Direction.ToQuaternion();
 			}
@@ -64,6 +65,7 @@ namespace FigureGameObjects
 		{
 			_figurePhysics.SetNowSpeedToStart();
 			_figurePhysics.StartMoveTo(_cube.StartPosition + _cube.DirectionVector3 * 20);
+			_figurePhysics.OnPositionReach += () => _cube.KnockOut();
 		}
 
 		public void StartMoveBack()

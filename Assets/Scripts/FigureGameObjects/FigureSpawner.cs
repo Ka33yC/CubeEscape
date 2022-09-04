@@ -1,3 +1,4 @@
+using System;
 using GenerationData;
 using UnityEngine;
 
@@ -10,13 +11,18 @@ namespace FigureGameObjects
         [SerializeField] private CubeGameObject cubePrefab;
         // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
         [SerializeField] private CameraController cameraController;
-    
-        private FiguresParent _figuresParent;
-    
+
+        public FiguresParent FiguresParent { get; private set; }
+
         private void Awake()
         {
             int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
             Figure[,,] figures = new Figure[x, y, z];
+            FiguresParent = new FiguresParent(figures, isDifficult);
+
+            Action<Figure> generationAction = isDifficult
+                ? figure => figure.SetDifficultRandomDirection()
+                : figure => figure.SetRandomDirection();
 
             for (int i = 0; i < x; i++)
             {
@@ -24,18 +30,17 @@ namespace FigureGameObjects
                 {
                     for (int k = 0; k < z; k++)
                     {
-                        Cube cube = new Cube(_figuresParent, new Vector3Int(i, j, k));
+                        Cube cube = new Cube(FiguresParent, new Vector3Int(i, j, k));
                         figures[i, j, k] = cube;
+                        generationAction(cube);
                     }
                 }
             }
-            
-            _figuresParent = new FiguresParent(figures, isDifficult);
         }
 
         private void Start()
         {
-            foreach (Figure figure in _figuresParent)
+            foreach (Figure figure in FiguresParent)
             {
                 Instantiate(cubePrefab, transform).Initialize(figure);
             }

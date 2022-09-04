@@ -177,6 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 720962886}
   - component: {fileID: 720962887}
+  - component: {fileID: 720962888}
   m_Layer: 0
   m_Name: CubeParent
   m_TagString: Untagged
@@ -215,6 +216,20 @@ MonoBehaviour:
   isDifficult: 1
   cubePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
   cameraController: {fileID: 963194229}
+--- !u!114 &720962888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720962885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b922c6267e54acb80b75650bb14d6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownBetweenEscape: 1
+  isSolve: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
