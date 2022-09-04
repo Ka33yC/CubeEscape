@@ -2,6 +2,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using FigureGameObjects;
 using GenerationData;
 using UnityEngine;
@@ -12,38 +14,45 @@ namespace AutoSolve
 	public class AutoSolver : MonoBehaviour
 	{
 		[SerializeField] private float cooldownBetweenEscape;
-		[SerializeField] private bool isSolve;
-		
+
+		private Task SolveTask;
 		private FigureSpawner _figureSpawner;
-		
+
 		private void Awake()
 		{
 			_figureSpawner = GetComponent<FigureSpawner>();
 		}
 
-		private void Update()
+		public void Solve()
 		{
-			if(!isSolve) return;
+			if (SolveTask != null && !SolveTask.IsCompleted) return;
 
-			StartCoroutine(Solve());
-			isSolve = false;
+			SolveTask = Solve(_figureSpawner.FiguresParent);
 		}
 
-		public IEnumerator Solve()
+		private async Task Solve(FiguresParent figuresParent)
 		{
-			FiguresParent figuresParent = _figureSpawner.FiguresParent;
 			foreach (Figure figure in figuresParent)
 			{
-				if(figure.IsKnockedOut) continue;
-			
+				if (figure.IsKnockedOut) continue;
+
 				HashSet<Figure> figuresToEscape = figuresParent.GetFiguresOnFiguresDirecion(figure);
 				figuresToEscape.Add(figure);
-				
+
 				foreach (Figure figureToEscape in figuresToEscape)
 				{
 					figureToEscape.FigureGameObject.Escape();
-					yield return new WaitForSeconds(cooldownBetweenEscape);
+					await WaitFor((int)(cooldownBetweenEscape * 1000));
 				}
+			}
+		}
+
+		private async Task WaitFor(int millieseconds)
+		{
+			Task waitTask = Task.Run(() => Thread.Sleep(millieseconds));
+			while (!waitTask.IsCompleted)
+			{
+				await Task.Yield();
 			}
 		}
 	}

@@ -28,7 +28,10 @@ namespace FigureGameObjects.States.CubeStates
 
 		public void StartIdle() => _cubeGameObject.StartIdle();
 
-		public void StopIdle() => Debug.Log("StopIdle");
+		public void StopIdle()
+		{
+			
+		}
 
 		public void StartShake() => _cubeGameObject.PlayShakeAnimation();
 

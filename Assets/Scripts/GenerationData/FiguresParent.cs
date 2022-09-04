@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace GenerationData
 		
 		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
 		
-		public HashSet<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
+		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();
 			if (direction == Direction.None) return figuresOnDirection;
@@ -54,7 +55,9 @@ namespace GenerationData
 				shift += convertedDirection;
 			}
 
-			return figuresOnDirection;
+			return from figure in figuresOnDirection
+				where !figure.IsKnockedOut
+				select figure;
 		}
 		
 		public HashSet<Figure> GetFiguresOnFiguresDirecion(Figure figureToCheck)
@@ -70,8 +73,6 @@ namespace GenerationData
 			{
 				if (figureToCheck == figuresOnDirection[i])
 					throw new ArgumentException("Невозможно получить все Figure, т.к. фигура вовзаращется сама в себя");
-				
-				if(figuresOnDirection[i].IsKnockedOut) continue;
 				
 				figuresOnDirection.AddRange(figuresOnDirection[i].GetFiguresOnDirection());
 			}
