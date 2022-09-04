@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GenerationData
@@ -18,15 +20,6 @@ namespace GenerationData
 				_figures.GetLength(1),
 				_figures.GetLength(2),
 			};
-
-			// Action<Figure> generationAction = isDifficult
-			// 	? figure => figure.SetDifficultRandomDirection()
-			// 	: figure => figure.SetRandomDirection();
-			//
-			// foreach (Figure figure in _figures)
-			// {
-			// 	generationAction(figure);
-			// }
 		}
 
 		public Figure this[int i, int j, int k] => _figures[i, j, k];
@@ -63,6 +56,31 @@ namespace GenerationData
 			}
 
 			return figuresOnDirection;
+		}
+		
+		public HashSet<Figure> GetFiguresOnFiguresDirecion(Figure figureToCheck)
+		{
+			HashSet<Figure> escapeStack = new HashSet<Figure>();
+			List<Figure> figuresOnDirection = new List<Figure>();
+			if (!figureToCheck.IsKnockedOut)
+			{
+				figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
+			}
+			
+			for (int i = 0; i < figuresOnDirection.Count; i++)
+			{
+				if (figureToCheck == figuresOnDirection[i])
+					throw new ArgumentException("Невозможно получить все Figure, т.к. фигура вовзаращется сама в себя");
+				
+				if(figuresOnDirection[i].IsKnockedOut) continue;
+				
+				figuresOnDirection.AddRange(figuresOnDirection[i].GetFiguresOnDirection());
+			}
+
+			figuresOnDirection.Reverse();
+			escapeStack.AddRange(figuresOnDirection);
+
+			return escapeStack;
 		}
 
 		public IEnumerator<Figure> GetEnumerator()

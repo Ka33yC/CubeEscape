@@ -34,9 +34,13 @@ namespace GenerationData
 		{
 			List<Direction> availableDirections = new List<Direction>()
 			{
-				Direction.Down, Direction.Left, Direction.Back, Direction.Up, Direction.Right, Direction.Forward, 
+				Direction.Up, 
+				Direction.Right, 
+				Direction.Forward, 
+				Direction.Down, 
+				Direction.Left, 
+				Direction.Back, 
 			};
-		
 			foreach (Direction notAvailableDirection in notAvailableDirections)
 			{
 				availableDirections.Remove(notAvailableDirection);
@@ -44,28 +48,18 @@ namespace GenerationData
 
 			for (int i = availableDirections.Count; i > 0; i--)
 			{
-				Direction = availableDirections[Random.Range(0, availableDirections.Count)];
-				HashSet<Figure> checkedFigures = new HashSet<Figure>();
-				List<Figure> notCheckedFigures = GetFiguresOnDirection().ToList();
-				bool isFindDirection = true;
-			
-				for (int j = 0; j < notCheckedFigures.Count; j++)
+				int directionRandomIndex = Random.Range(0, availableDirections.Count);
+				Direction = availableDirections[directionRandomIndex];
+
+				try
 				{
-					Figure figureToCheck = notCheckedFigures[j];
-					if (figureToCheck == this)
-					{
-						availableDirections.Remove(Direction);
-						isFindDirection = false;
-						break;
-					}
-
-					if (checkedFigures.Add(figureToCheck))
-					{
-						notCheckedFigures.AddRange(figureToCheck.GetFiguresOnDirection());
-					}
+					Parent.GetFiguresOnFiguresDirecion(this);
+					return true;
 				}
-
-				if(isFindDirection) return true;
+				catch (ArgumentException e)
+				{
+					availableDirections.RemoveAt(directionRandomIndex);
+				}
 			}
 			
 			Direction = Direction.None;

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FigureGameObjects;
 using GenerationData;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AutoSolve
@@ -25,43 +26,26 @@ namespace AutoSolve
 		{
 			if(!isSolve) return;
 
-			StartCoroutine(Solve(_figureSpawner.FiguresParent));
+			StartCoroutine(Solve());
 			isSolve = false;
 		}
 
-		public IEnumerator Solve(FiguresParent figuresParent)
+		public IEnumerator Solve()
 		{
+			FiguresParent figuresParent = _figureSpawner.FiguresParent;
 			foreach (Figure figure in figuresParent)
 			{
 				if(figure.IsKnockedOut) continue;
 			
-				IEnumerable<Figure> figuresToEscape = Solve(figure);
+				HashSet<Figure> figuresToEscape = figuresParent.GetFiguresOnFiguresDirecion(figure);
+				figuresToEscape.Add(figure);
+				
 				foreach (Figure figureToEscape in figuresToEscape)
 				{
 					figureToEscape.FigureGameObject.Escape();
 					yield return new WaitForSeconds(cooldownBetweenEscape);
 				}
 			}
-		}
-
-		private HashSet<Figure> Solve(Figure figureForSolve)
-		{
-			HashSet<Figure> escapeStack = new HashSet<Figure>();
-			List<Figure> figuresOnDirection = new List<Figure>() { figureForSolve };
-			
-			for (int i = 0; i < figuresOnDirection.Count; i++)
-			{
-				if(figuresOnDirection[i].IsKnockedOut) continue;
-				
-				figuresOnDirection.AddRange(figuresOnDirection[i].GetFiguresOnDirection());
-			}
-
-			for (int i = figuresOnDirection.Count - 1; i >= 0; i--)
-			{
-				escapeStack.Add(figuresOnDirection[i]);
-			}
-
-			return escapeStack;
 		}
 	}
 }
