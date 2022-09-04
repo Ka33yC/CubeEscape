@@ -11,14 +11,6 @@ namespace GenerationData
 	{
 		protected Direction _direction;
 		protected Vector3 _directionVector3;
-		
-		public Vector3 DirectionVector3 => _directionVector3;
-		
-		public Cube(FiguresParent parent, Vector3Int startLocalPosition) : 
-			base(parent, startLocalPosition)
-		{
-			
-		}
 
 		public Direction Direction
 		{
@@ -29,12 +21,20 @@ namespace GenerationData
 				_directionVector3 = _direction.ToVector();
 			}
 		}
+		
+		public Vector3 DirectionVector3 => _directionVector3;
+		
+		public Cube(FiguresParent parent, Vector3Int startLocalPosition) : 
+			base(parent, startLocalPosition)
+		{
+			
+		}
 
-		public override void SetRandomDirection(params Direction[] notAvailableDirections)
+		public override bool SetRandomDirection(params Direction[] notAvailableDirections)
 		{
 			List<Direction> availableDirections = new List<Direction>()
 			{
-				Direction.Up, Direction.Right, Direction.Forward, Direction.Down, Direction.Left, Direction.Back
+				Direction.Down, Direction.Left, Direction.Back, Direction.Up, Direction.Right, Direction.Forward, 
 			};
 		
 			foreach (Direction notAvailableDirection in notAvailableDirections)
@@ -64,9 +64,47 @@ namespace GenerationData
 						notCheckedFigures.AddRange(figureToCheck.GetFiguresOnDirection());
 					}
 				}
-			
-				if(isFindDirection) return;
+
+				if(isFindDirection) return true;
 			}
+			
+			Direction = Direction.None;
+			return false;
+		}
+
+		public override bool SetDifficultRandomDirection(params Direction[] notAvailableDirections)
+		{
+			List<Direction> undesirableDirections = new List<Direction>(notAvailableDirections);
+
+			void AddIfCubeByCoordinates(Vector3Int chekingCubeCoordinates)
+			{
+				if (Parent[chekingCubeCoordinates] is Cube checkingCube)
+				{
+					undesirableDirections.Add(checkingCube._direction);
+				}
+			}
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (CoordinatesInFiguresParent[i] + 1 < Parent.Length[i])
+				{
+					Vector3Int chekingCubeCoordinates = CoordinatesInFiguresParent;
+					chekingCubeCoordinates[i]++;
+
+					AddIfCubeByCoordinates(chekingCubeCoordinates);
+				}
+				if (CoordinatesInFiguresParent[i] - 1 >= 0)
+				{
+					Vector3Int chekingCubeCoordinates = CoordinatesInFiguresParent;
+					chekingCubeCoordinates[i]--;
+
+					AddIfCubeByCoordinates(chekingCubeCoordinates);
+				}
+			}
+			
+			if(SetRandomDirection(undesirableDirections.ToArray())) return true;
+
+			return SetRandomDirection(notAvailableDirections);
 		}
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>

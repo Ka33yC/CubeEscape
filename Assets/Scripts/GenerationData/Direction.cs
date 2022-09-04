@@ -18,6 +18,7 @@ namespace GenerationData
 	{
 		public static Vector3Int ToVector(this Direction direction) => direction switch
 		{
+			Direction.None => Vector3Int.zero,
 			Direction.Up => Vector3Int.up,
 			Direction.Right => Vector3Int.right,
 			Direction.Forward => Vector3Int.forward,

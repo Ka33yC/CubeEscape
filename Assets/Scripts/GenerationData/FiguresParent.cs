@@ -6,16 +6,24 @@ namespace GenerationData
 	public class FiguresParent
 	{
 		private readonly Figure[,,] _figures;
+		
+		public readonly int[] Length;
 
 		public FiguresParent(Figure[,,] figures)
 		{
 			_figures = figures;
+			Length = new int[]
+			{
+				_figures.GetLength(0),
+				_figures.GetLength(1),
+				_figures.GetLength(2),
+			};
 		}
 
 		public Figure this[int i, int j, int k] => _figures[i, j, k];
-
-		public int GetFiguresCount(int dimension) => _figures.GetLength(dimension);
-
+		
+		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
+		
 		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();

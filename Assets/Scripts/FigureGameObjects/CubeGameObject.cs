@@ -17,11 +17,13 @@ namespace FigureGameObjects
 		
 		private Cube _cube;
 		private CubeStateMachine _cubeStateMachine;
-	
-		public Cube Cube
+
+		public Figure Figure => _cube;
+
+		private Cube Cube
 		{
 			get => _cube;
-			private set
+			set
 			{
 				_cube = value;
 				transform.position = _cube.StartPosition;
