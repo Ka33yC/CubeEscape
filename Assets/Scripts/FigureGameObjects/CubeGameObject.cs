@@ -15,18 +15,18 @@ namespace FigureGameObjects
 		private FigurePhysics _figurePhysics;
 		private CubeAnimator _cubeAnimator;
 		
-		private Cube _cube;
+		private DirectedFigure _directedFigure;
 		private CubeStateMachine _cubeStateMachine;
 
-		private Cube Cube
+		private DirectedFigure DirectedFigure
 		{
-			get => _cube;
+			get => _directedFigure;
 			set
 			{
-				_cube = value;
-				_cube.FigureGameObject = this;
-				transform.position = _cube.StartPosition;
-				transform.rotation = _cube.Direction.ToQuaternion();
+				_directedFigure = value;
+				_directedFigure.FigureGameObject = this;
+				transform.position = _directedFigure.StartPosition;
+				transform.rotation = _directedFigure.Direction.ToQuaternion();
 			}
 		}
 
@@ -48,13 +48,13 @@ namespace FigureGameObjects
 
 		public void Initialize(Figure cube)
 		{
-			Cube = (Cube)cube;
+			DirectedFigure = (DirectedFigure)cube;
 		}
 
 		public void StartIdle()
 		{
 			_figurePhysics.NowSpeed = 0;
-			_figurePhysics.Position = Cube.StartPosition;
+			_figurePhysics.Position = DirectedFigure.StartPosition;
 		}
 
 		public void PlayShakeAnimation() => _cubeAnimator.PlayShakeAnimation();
@@ -64,14 +64,14 @@ namespace FigureGameObjects
 		public void StartMoveForward()
 		{
 			_figurePhysics.SetNowSpeedToStart();
-			_figurePhysics.StartMoveTo(_cube.StartPosition + _cube.DirectionVector3 * 20);
-			_figurePhysics.OnPositionReach += () => _cube.KnockOut();
+			_figurePhysics.StartMoveTo(_directedFigure.StartPosition + _directedFigure.DirectionVector3 * 20);
+			_figurePhysics.OnPositionReach += () => _directedFigure.KnockOut();
 		}
 
 		public void StartMoveBack()
 		{
 			_figurePhysics.SetNowSpeedToStart();
-			_figurePhysics.StartMoveTo(_cube.StartPosition);
+			_figurePhysics.StartMoveTo(_directedFigure.StartPosition);
 			
 			_figurePhysics.OnPositionReach += () => _cubeStateMachine.HandleInput(FigureAction.Idle);
 		}

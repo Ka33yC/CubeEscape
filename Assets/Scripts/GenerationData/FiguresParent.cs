@@ -8,7 +8,6 @@ namespace GenerationData
 	public class FiguresParent
 	{
 		private readonly Figure[,,] _figures;
-		
 		public readonly int[] Length;
 
 		public FiguresParent(Figure[,,] figures, bool isDifficult)
@@ -26,7 +25,7 @@ namespace GenerationData
 		
 		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
 		
-		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
+		public HashSet<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();
 			if (direction == Direction.None) return figuresOnDirection;

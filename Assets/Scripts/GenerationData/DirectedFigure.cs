@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 namespace GenerationData
 {
 	[Serializable]
-	public class Cube : Figure
+	public class DirectedFigure : Figure
 	{
 		protected Direction _direction;
 		protected Vector3 _directionVector3;
@@ -24,10 +24,20 @@ namespace GenerationData
 		
 		public Vector3 DirectionVector3 => _directionVector3;
 		
-		public Cube(FiguresParent parent, Vector3Int coordinatesInFiguresParent) : 
+		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) : 
 			base(parent, coordinatesInFiguresParent)
 		{
 			StartPosition = CoordinatesToWorldPosition(parent, coordinatesInFiguresParent);
+		}
+		
+		public Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
+		{
+			float xCenterCoordinates = - ((float)figuresParent.Length[0] - 1) / 2;
+			float yCenterCoordinates = - ((float)figuresParent.Length[1] - 1) / 2;
+			float zCenterCoordinates = - ((float)figuresParent.Length[2] - 1) / 2;
+
+			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
+				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
 
 		public override bool SetRandomDirection(params Direction[] notAvailableDirections)
@@ -72,7 +82,7 @@ namespace GenerationData
 
 			void AddIfCubeByCoordinates(Vector3Int chekingCubeCoordinates)
 			{
-				if (Parent[chekingCubeCoordinates] is Cube checkingCube)
+				if (Parent[chekingCubeCoordinates] is DirectedFigure checkingCube)
 				{
 					undesirableDirections.Add(checkingCube._direction);
 				}
@@ -99,16 +109,6 @@ namespace GenerationData
 			if(SetRandomDirection(undesirableDirections.ToArray())) return true;
 
 			return SetRandomDirection(notAvailableDirections);
-		}
-		
-		public Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
-		{
-			float xCenterCoordinates = - ((float)figuresParent.Length[0] - 1) / 2;
-			float yCenterCoordinates = - ((float)figuresParent.Length[1] - 1) / 2;
-			float zCenterCoordinates = - ((float)figuresParent.Length[2] - 1) / 2;
-
-			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
-				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>

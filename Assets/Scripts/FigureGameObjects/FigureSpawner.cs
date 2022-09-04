@@ -30,7 +30,7 @@ namespace FigureGameObjects
                 {
                     for (int k = 0; k < z; k++)
                     {
-                        Cube cube = new Cube(FiguresParent, new Vector3Int(i, j, k));
+                        DirectedFigure cube = new DirectedFigure(FiguresParent, new Vector3Int(i, j, k));
                         figures[i, j, k] = cube;
                         generationAction(cube);
                     }

@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using FigureGameObjects;
 using GenerationData;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AutoSolve
