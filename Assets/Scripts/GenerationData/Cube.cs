@@ -24,10 +24,10 @@ namespace GenerationData
 		
 		public Vector3 DirectionVector3 => _directionVector3;
 		
-		public Cube(FiguresParent parent, Vector3Int startLocalPosition) : 
-			base(parent, startLocalPosition)
+		public Cube(FiguresParent parent, Vector3Int coordinatesInFiguresParent) : 
+			base(parent, coordinatesInFiguresParent)
 		{
-			
+			StartPosition = CoordinatesToWorldPosition(parent, coordinatesInFiguresParent);
 		}
 
 		public override bool SetRandomDirection(params Direction[] notAvailableDirections)
@@ -105,6 +105,16 @@ namespace GenerationData
 			if(SetRandomDirection(undesirableDirections.ToArray())) return true;
 
 			return SetRandomDirection(notAvailableDirections);
+		}
+		
+		public Vector3 CoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
+		{
+			float xCenterCoordinates = - ((float)figuresParent.Length[0] - 1) / 2;
+			float yCenterCoordinates = - ((float)figuresParent.Length[1] - 1) / 2;
+			float zCenterCoordinates = - ((float)figuresParent.Length[2] - 1) / 2;
+
+			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
+				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
 
 		public override IEnumerable<Figure> GetFiguresOnDirection() =>
