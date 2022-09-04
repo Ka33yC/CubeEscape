@@ -8,11 +8,11 @@ public class CameraController : MonoBehaviour
     [SerializeField, Min(0)] private float minApproximate;
     [SerializeField, Range(0.01f, 1)] private float sensitivity;
     [SerializeField, Range(0.01f, 10)] private float approximateSensitivity = 1;
-    
+
     private Transform _transform;
     private Camera _camera;
     private float _maxApproximate;
-    
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
 
         Vector3 lookPoint = _transform.rotation * mousePosition;
         Vector3 newPosition = _transform.position + lookPoint * (scrollDelta * approximateSensitivity);
-        
+
         _transform.position = newPosition;
     }
 
@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
     public void SetSafetyPosition(Vector3 parentSize)
     {
         float halfOfParentSizeMagnitude = parentSize.magnitude * 0.5f;
-        
+
         minApproximate = halfOfParentSizeMagnitude > minApproximate ? halfOfParentSizeMagnitude : minApproximate;
         _maxApproximate = minApproximate * 3;
 

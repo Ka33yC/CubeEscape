@@ -24,7 +24,7 @@ public class InputEvents : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-		
+
 		Instance = this;
 		DontDestroyOnLoad(gameObject);
 	}
@@ -32,7 +32,7 @@ public class InputEvents : MonoBehaviour
 	private void Update()
 	{
 		Vector3 mousePosition = Input.mousePosition;
-		
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			_startInputMousePosition = mousePosition;

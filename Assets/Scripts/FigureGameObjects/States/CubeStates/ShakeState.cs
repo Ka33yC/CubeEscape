@@ -16,12 +16,12 @@
 					return this;
 			}
 		}
-		
+
 		public override void EnterAction(CubeStateMachine cube)
 		{
 			cube.StartShake();
 		}
-		
+
 		public override void ExitAction(CubeStateMachine cube)
 		{
 			cube.StopShake();

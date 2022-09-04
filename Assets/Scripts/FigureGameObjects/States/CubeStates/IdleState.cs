@@ -14,7 +14,7 @@
 					return this;
 			}
 		}
-		
+
 		public override void EnterAction(CubeStateMachine cube)
 		{
 			cube.StartIdle();

@@ -7,11 +7,11 @@ namespace FigureGameObjects
 	public class FigurePhysics : MonoBehaviour
 	{
 		[SerializeField] private SpeedParameters speedParameters;
-		
+
 		private Transform _transform;
 		private float _nowSpeed;
 		private Vector3 _direction;
-		
+
 		private event Action OnFixedUpdate;
 		public event Action OnPositionReach;
 		public event Action<IFigureGameObject> OnCollision;
@@ -48,24 +48,24 @@ namespace FigureGameObjects
 		{
 			OnFixedUpdate?.Invoke();
 		}
-		
+
 		private void OnCollisionEnter(Collision collision)
 		{
 			IFigureGameObject figureGameObject = collision.collider.GetComponent<IFigureGameObject>();
 			if (figureGameObject == null) return;
-		
+
 			OnCollision?.Invoke(figureGameObject);
 		}
-		
+
 		public void SetNowSpeedToStart() => NowSpeed = speedParameters.StartSpeed;
 
 		private void UpSpeedOnAcceleration() =>
 			NowSpeed += NowSpeed * speedParameters.Acceleration * Time.fixedDeltaTime;
-		
+
 		public void StartMoveTo(Vector3 endPosition)
 		{
 			_direction = (_transform.position - endPosition).normalized;
-			
+
 			OnFixedUpdate += () => DoStepTo(endPosition);
 		}
 

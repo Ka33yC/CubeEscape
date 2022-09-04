@@ -9,7 +9,7 @@ namespace FigureGameObjects.Animations
 		private readonly CubeAnimatorParameters _animatorParameters;
 
 		private Sequence _nowAnimation;
-		
+
 		public CubeAnimator(Transform cubeTransform, CubeAnimatorParameters animatorParameters)
 		{
 			_transform = cubeTransform;

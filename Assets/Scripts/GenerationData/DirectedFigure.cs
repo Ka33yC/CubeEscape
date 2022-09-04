@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,10 +20,10 @@ namespace GenerationData
 				_directionVector3 = _direction.ToVector();
 			}
 		}
-		
+
 		public Vector3 DirectionVector3 => _directionVector3;
-		
-		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) : 
+
+		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) :
 			base(parent, coordinatesInFiguresParent)
 		{
 		}
@@ -33,12 +32,12 @@ namespace GenerationData
 		{
 			List<Direction> availableDirections = new List<Direction>()
 			{
-				Direction.Up, 
-				Direction.Right, 
-				Direction.Forward, 
-				Direction.Down, 
-				Direction.Left, 
-				Direction.Back, 
+				Direction.Up,
+				Direction.Right,
+				Direction.Forward,
+				Direction.Down,
+				Direction.Left,
+				Direction.Back,
 			};
 			foreach (Direction notAvailableDirection in notAvailableDirections)
 			{
@@ -60,7 +59,7 @@ namespace GenerationData
 					availableDirections.RemoveAt(directionRandomIndex);
 				}
 			}
-			
+
 			Direction = Direction.None;
 			return false;
 		}
@@ -86,6 +85,7 @@ namespace GenerationData
 
 					AddIfCubeByCoordinates(chekingCubeCoordinates);
 				}
+
 				if (CoordinatesInFiguresParent[i] - 1 >= 0)
 				{
 					Vector3Int chekingCubeCoordinates = CoordinatesInFiguresParent;
@@ -94,8 +94,8 @@ namespace GenerationData
 					AddIfCubeByCoordinates(chekingCubeCoordinates);
 				}
 			}
-			
-			if(SetRandomDirection(undesirableDirections.ToArray())) return true;
+
+			if (SetRandomDirection(undesirableDirections.ToArray())) return true;
 
 			return SetRandomDirection(notAvailableDirections);
 		}

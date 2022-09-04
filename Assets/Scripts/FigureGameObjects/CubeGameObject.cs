@@ -11,15 +11,15 @@ namespace FigureGameObjects
 	{
 		[SerializeField] private CubeAnimatorParameters cubeAnimatorParameters;
 		[SerializeField] private Transform cubeMesh;
-		
+
 		private FigurePhysics _figurePhysics;
 		private CubeAnimator _cubeAnimator;
-		
+
 		private DirectedFigure _directedFigure;
 		private CubeStateMachine _cubeStateMachine;
 
 		private Vector3 _startPosition;
-		
+
 		private DirectedFigure DirectedFigure
 		{
 			get => _directedFigure;
@@ -47,7 +47,7 @@ namespace FigureGameObjects
 		}
 
 		public void Escape() => _cubeStateMachine.HandleInput(FigureAction.Escape);
-		
+
 		public void Collide(IFigureGameObject collideWith) => _cubeStateMachine.HandleInput(FigureAction.Collision);
 
 		public void Initialize(Figure cube)
@@ -62,9 +62,9 @@ namespace FigureGameObjects
 		}
 
 		public void PlayShakeAnimation() => _cubeAnimator.PlayShakeAnimation();
-		
+
 		public void StopPlayShakeAnimation() => _cubeAnimator.StopShakeAnimation();
-		
+
 		public void StartMoveForward()
 		{
 			_figurePhysics.SetNowSpeedToStart();
@@ -76,23 +76,24 @@ namespace FigureGameObjects
 		{
 			_figurePhysics.SetNowSpeedToStart();
 			_figurePhysics.StartMoveTo(_startPosition);
-			
+
 			_figurePhysics.OnPositionReach += () => _cubeStateMachine.HandleInput(FigureAction.Idle);
 		}
-		
+
 		public void StopMove()
 		{
 			_figurePhysics.StopMove();
 		}
-		
-		public Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinatesInFiguresParent)
-		{
-			float xCenterCoordinates = - ((float)figuresParent.Length[0] - 1) / 2;
-			float yCenterCoordinates = - ((float)figuresParent.Length[1] - 1) / 2;
-			float zCenterCoordinates = - ((float)figuresParent.Length[2] - 1) / 2;
 
-			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x, 
-				yCenterCoordinates + coordinatesInFiguresParent.y,  zCenterCoordinates + coordinatesInFiguresParent.z);
+		public Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent,
+			Vector3Int coordinatesInFiguresParent)
+		{
+			float xCenterCoordinates = -((float)figuresParent.Length[0] - 1) / 2;
+			float yCenterCoordinates = -((float)figuresParent.Length[1] - 1) / 2;
+			float zCenterCoordinates = -((float)figuresParent.Length[2] - 1) / 2;
+
+			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x,
+				yCenterCoordinates + coordinatesInFiguresParent.y, zCenterCoordinates + coordinatesInFiguresParent.z);
 		}
 	}
 }

@@ -8,7 +8,9 @@ namespace FigureGameObjects
     {
         [SerializeField, Min(1)] private Vector3Int cubeSize;
         [SerializeField] private bool isDifficult;
+
         [SerializeField] private CubeGameObject cubePrefab;
+
         // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
         [SerializeField] private CameraController cameraController;
 
@@ -44,7 +46,7 @@ namespace FigureGameObjects
             {
                 Instantiate(cubePrefab, transform).Initialize(figure);
             }
-        
+
             cameraController.SetSafetyPosition(cubeSize);
         }
     }

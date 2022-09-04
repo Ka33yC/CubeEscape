@@ -23,22 +23,22 @@ namespace GenerationData
 		}
 
 		public Figure this[int i, int j, int k] => _figures[i, j, k];
-		
+
 		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
-		
+
 		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();
 			if (direction == Direction.None) return figuresOnDirection;
-		
+
 			int iteratorStartValue = 0, border = 0, addedPerIteration = 0;
 			Vector3Int convertedDirection = direction.ToVector();
 			Vector3Int shift = coordinatesInFiguresParent;
 
 			for (int i = 0; i < 3; i++)
 			{
-				if(convertedDirection[i] == 0) continue;
-			
+				if (convertedDirection[i] == 0) continue;
+
 				border = convertedDirection[i] == 1 ? _figures.GetLength(i) : -1;
 				addedPerIteration = convertedDirection[i];
 				iteratorStartValue = coordinatesInFiguresParent[i];
@@ -51,7 +51,7 @@ namespace GenerationData
 				{
 					figuresOnDirection.Add(figureOnDirection);
 				}
-			
+
 				shift += convertedDirection;
 			}
 
@@ -59,7 +59,7 @@ namespace GenerationData
 				where !figure.IsKnockedOut
 				select figure;
 		}
-		
+
 		public HashSet<Figure> GetFiguresOnFiguresDirecion(Figure figureToCheck)
 		{
 			HashSet<Figure> escapeStack = new HashSet<Figure>();
@@ -68,12 +68,12 @@ namespace GenerationData
 			{
 				figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
 			}
-			
+
 			for (int i = 0; i < figuresOnDirection.Count; i++)
 			{
 				if (figureToCheck == figuresOnDirection[i])
 					throw new ArgumentException("Невозможно получить все Figure, т.к. фигура вовзаращется сама в себя");
-				
+
 				figuresOnDirection.AddRange(figuresOnDirection[i].GetFiguresOnDirection());
 			}
 

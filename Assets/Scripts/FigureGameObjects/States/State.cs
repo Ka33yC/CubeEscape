@@ -9,7 +9,7 @@ namespace FigureGameObjects.States
 		public virtual void EnterAction(CubeStateMachine cubeStateMachine)
 		{
 		}
-		
+
 		public virtual void ExitAction(CubeStateMachine cubeStateMachine)
 		{
 		}

@@ -14,7 +14,7 @@ namespace AutoSolve
 			AutoSolver autoSolver = (AutoSolver)target;
 
 			if (!GUILayout.Button("Solve")) return;
-			
+
 			autoSolver.Solve();
 		}
 	}

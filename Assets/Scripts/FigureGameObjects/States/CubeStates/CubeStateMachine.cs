@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace FigureGameObjects.States.CubeStates
 {
@@ -15,12 +14,12 @@ namespace FigureGameObjects.States.CubeStates
 			_nowState = new IdleState();
 			_nowState.EnterAction(this);
 		}
-		
+
 		public void HandleInput(FigureAction figureAction)
 		{
 			State newState = _nowState.HandleInput(figureAction);
-			if(_nowState == newState) return;
-				
+			if (_nowState == newState) return;
+
 			_nowState.ExitAction(this);
 			_nowState = newState;
 			_nowState.EnterAction(this);
@@ -30,7 +29,7 @@ namespace FigureGameObjects.States.CubeStates
 
 		public void StopIdle()
 		{
-			
+
 		}
 
 		public void StartShake() => _cubeGameObject.PlayShakeAnimation();

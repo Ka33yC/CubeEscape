@@ -20,10 +20,10 @@ namespace GenerationData
 			Parent = parent;
 			CoordinatesInFiguresParent = coordinatesInFiguresParent;
 		}
-		
+
 		/// <returns>Is random direction found</returns>
 		public abstract bool SetRandomDirection(params Direction[] notAvailableDirections);
-		
+
 		/// <summary>
 		/// Difficult means that first will check directions which not match with behind figures
 		/// </summary>
