@@ -6,17 +6,22 @@ namespace FigureGameObjects
 {
     public class FigureSpawner : MonoBehaviour
     {
-        [SerializeField, Min(1)] private Vector3Int cubeSize;
-        [SerializeField] private bool isDifficult;
+        [SerializeField, Min(1)] protected Vector3Int cubeSize;
+        [SerializeField] protected bool isDifficult;
 
-        [SerializeField] private CubeGameObject cubePrefab;
+        [SerializeField] protected CubeGameObject cubePrefab;
 
         // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
-        [SerializeField] private CameraController cameraController;
+        [SerializeField] protected CameraController cameraController;
 
-        public FiguresParent FiguresParent { get; private set; }
+        public FiguresParent FiguresParent { get; protected set; }
 
         private void Awake()
+        {
+            GenerateFigures();
+        }
+
+        protected virtual void GenerateFigures()
         {
             int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
             Figure[,,] figures = new Figure[x, y, z];
@@ -44,6 +49,8 @@ namespace FigureGameObjects
         {
             foreach (Figure figure in FiguresParent)
             {
+                if(figure == null) continue;
+                
                 Instantiate(cubePrefab, transform).Initialize(figure);
             }
 

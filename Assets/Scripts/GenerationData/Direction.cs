@@ -5,13 +5,13 @@ namespace GenerationData
 {
 	public enum Direction
 	{
-		None,
-		Up,
-		Right,
-		Forward,
-		Down,
-		Left,
-		Back
+		None = -1,
+		Right = 0,
+		Up = 1,
+		Forward = 2,
+		Left = 3,
+		Down = 4,
+		Back = 5
 	}
 
 	public static class DirectionConverter
@@ -19,11 +19,11 @@ namespace GenerationData
 		public static Vector3Int ToVector(this Direction direction) => direction switch
 		{
 			Direction.None => Vector3Int.zero,
-			Direction.Up => Vector3Int.up,
 			Direction.Right => Vector3Int.right,
+			Direction.Up => Vector3Int.up,
 			Direction.Forward => Vector3Int.forward,
-			Direction.Down => Vector3Int.down,
 			Direction.Left => Vector3Int.left,
+			Direction.Down => Vector3Int.down,
 			Direction.Back => Vector3Int.back,
 			_ => throw new ArgumentException("Неизвестный Direction"),
 		};

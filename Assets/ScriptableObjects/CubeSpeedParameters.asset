@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88aa4c60e7747108f42f0b362abe81c, type: 3}
   m_Name: CubeSpeedParameters
   m_EditorClassIdentifier: 
-  startSpeed: 50
-  acceleration: 3
-  maxSpeed: 50
+  startSpeed: 3
+  acceleration: 4
+  maxSpeed: 20
