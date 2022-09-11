@@ -11,6 +11,9 @@ namespace GenerationData
 		private readonly Figure[,,] _figures;
 		public readonly int[] Length;
 
+		private int _remaningFigures;
+		public event Action OnAllFiguresKnocked;
+
 		public FiguresParent(Figure[,,] figures, bool isDifficult)
 		{
 			_figures = figures;
@@ -20,11 +23,35 @@ namespace GenerationData
 				_figures.GetLength(1),
 				_figures.GetLength(2),
 			};
+			
+			foreach (Figure figure in _figures)
+			{
+				if(figure == null) continue;
+
+				figure.OnKnockOut += FigureOnKnockOut;
+				_remaningFigures++;
+			}
 		}
 
-		public Figure this[int i, int j, int k] => _figures[i, j, k];
+		private void FigureOnKnockOut()
+		{
+			_remaningFigures--;
+			if(_remaningFigures != 0) return;
+			
+			OnAllFiguresKnocked?.Invoke();
+		}
+
+		public Figure this[int x, int y, int z] => _figures[x, y, z];
 
 		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
+
+		public IEnumerator<Figure> GetEnumerator()
+		{
+			foreach (Figure figure in _figures)
+			{
+				yield return figure;
+			}
+		}
 
 		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
@@ -81,14 +108,6 @@ namespace GenerationData
 			escapeStack.AddRange(figuresOnDirection);
 
 			return escapeStack;
-		}
-
-		public IEnumerator<Figure> GetEnumerator()
-		{
-			foreach (Figure figure in _figures)
-			{
-				yield return figure;
-			}
 		}
 	}
 }
