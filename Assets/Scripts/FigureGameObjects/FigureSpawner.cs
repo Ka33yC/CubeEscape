@@ -8,20 +8,19 @@ namespace FigureGameObjects
     {
         [SerializeField, Min(1)] protected Vector3Int cubeSize;
         [SerializeField] protected bool isDifficult;
-
         [SerializeField] protected CubeGameObject cubePrefab;
 
         // TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
         [SerializeField] protected CameraController cameraController;
 
-        public FiguresParent FiguresParent { get; protected set; }
+        public FiguresParent FiguresParent { get; private set; }
 
         private void Awake()
         {
             GenerateFigures();
         }
 
-        protected virtual void GenerateFigures()
+        private void GenerateFigures()
         {
             int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
             Figure[,,] figures = new Figure[x, y, z];

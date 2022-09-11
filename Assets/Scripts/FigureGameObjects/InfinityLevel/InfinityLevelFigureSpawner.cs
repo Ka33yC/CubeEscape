@@ -6,9 +6,34 @@ using UnityEngine;
 
 namespace FigureGameObjects.InfinityLevel
 {
-	public class InfinityLevelFigureSpawner : FigureSpawner
+	public class InfinityLevelFigureSpawner : MonoBehaviour
 	{
-		protected override void GenerateFigures()
+		[SerializeField, Min(1)] protected Vector3Int cubeSize;
+		[SerializeField] protected bool isDifficult;
+		[SerializeField] protected CubeGameObject cubePrefab;
+		// TODO: Когда появится файл сохранения, убрать прямую передачу и вызов метода и поменять его на вызов в start у камеры
+		[SerializeField] protected CameraController cameraController;
+
+		private FiguresParent _figuresParent;
+		
+		private void Awake()
+		{
+			GenerateFigures();
+		}
+		
+		private void Start()
+		{
+			foreach (Figure figure in _figuresParent)
+			{
+				if(figure == null) continue;
+                
+				Instantiate(cubePrefab, transform).Initialize(figure);
+			}
+
+			cameraController.SetSafetyPosition(cubeSize);
+		}
+		
+		private void GenerateFigures()
 		{
 			int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
 			if (x < 3 || y < 3 || z < 3)
@@ -17,10 +42,10 @@ namespace FigureGameObjects.InfinityLevel
 			}
 			
 			Figure[,,] figures = new Figure[x, y, z];
-			FiguresParent = new FiguresParent(figures, isDifficult);
+			_figuresParent = new FiguresParent(figures, isDifficult);
 			Action<Figure> generationAction = isDifficult
-				? figure => figure.SetDifficultRandomDirection(GetNotAvailableDirections(figure))
-				: figure => figure.SetRandomDirection(GetNotAvailableDirections(figure));
+				? figure => figure.SetDifficultRandomDirection(GetNotAvailableDirections(figure).ToArray())
+				: figure => figure.SetRandomDirection(GetNotAvailableDirections(figure).ToArray());
 			
 			for (int i = 0; i < x; i++)
 			{
@@ -28,7 +53,7 @@ namespace FigureGameObjects.InfinityLevel
 				{
 					for (int k = 0; k < z; k++)
 					{
-						DirectedFigure cube = new DirectedFigure(FiguresParent, new Vector3Int(i, j, k));
+						DirectedFigure cube = new DirectedFigure(_figuresParent, new Vector3Int(i, j, k));
 						if(!IsOnAnyBoder(cube)) continue;
 						
 						figures[i, j, k] = cube;
@@ -38,7 +63,7 @@ namespace FigureGameObjects.InfinityLevel
 			}
 		}
 
-		private Direction[] GetNotAvailableDirections(Figure figure)
+		private List<Direction> GetNotAvailableDirections(Figure figure)
 		{
 			List<Direction> result = new List<Direction>();
 			for (int i = 0; i < 3; i++)
@@ -52,10 +77,10 @@ namespace FigureGameObjects.InfinityLevel
 					result.Add((Direction)i + 3);
 				}
 
-				if (result.Count == 2) return Array.Empty<Direction>();
+				if (result.Count == 2) return new List<Direction>();
 			}
 			
-			return result.ToArray();
+			return result;
 		}
 
 		private bool IsOnAnyBoder(Figure figure)

@@ -35,8 +35,8 @@ namespace FigureGameObjects
 
 		public Vector3 Position
 		{
-			get => _transform.position;
-			set => _transform.position = value;
+			get => _transform.localPosition;
+			set => _transform.localPosition = value;
 		}
 
 		private void Awake()
@@ -64,7 +64,7 @@ namespace FigureGameObjects
 
 		public void StartMoveTo(Vector3 endPosition)
 		{
-			_direction = (_transform.position - endPosition).normalized;
+			_direction = (_transform.localPosition - endPosition).normalized;
 
 			OnFixedUpdate += () => DoStepTo(endPosition);
 		}
@@ -72,17 +72,17 @@ namespace FigureGameObjects
 		private void DoStepTo(Vector3 position)
 		{
 			Vector3 step = _direction * (NowSpeed * Time.fixedDeltaTime);
-			Vector3 newPosition = _transform.position - step;
+			Vector3 newPosition = _transform.localPosition - step;
 			float distanceToPosition = (newPosition - position).magnitude;
 			if (distanceToPosition < step.magnitude)
 			{
-				_transform.position = position;
+				_transform.localPosition = position;
 				OnPositionReach?.Invoke();
 				StopMove();
 				return;
 			}
 
-			_transform.position = newPosition;
+			_transform.localPosition = newPosition;
 			UpSpeedOnAcceleration();
 		}
 

@@ -29,8 +29,8 @@ namespace FigureGameObjects
 				_directedFigure.FigureGameObject = this;
 				_startPosition = FigureCoordinatesToWorldPosition(_directedFigure.Parent,
 					_directedFigure.CoordinatesInFiguresParent);
-				transform.position = _startPosition;
-				transform.rotation = _directedFigure.Direction.ToQuaternion();
+				transform.localPosition = _startPosition;
+				transform.localRotation = _directedFigure.Direction.ToQuaternion();
 			}
 		}
 

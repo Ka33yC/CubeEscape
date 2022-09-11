@@ -11,9 +11,13 @@ namespace GenerationData
 		public readonly FiguresParent Parent;
 		public readonly Vector3Int CoordinatesInFiguresParent;
 
+		protected bool _isKnockedOut;
+		
+		public event Action OnKnockOut;
 		public IFigureGameObject FigureGameObject;
 
-		public bool IsKnockedOut { get; protected set; }
+
+		public bool IsKnockedOut => _isKnockedOut;
 
 		protected Figure(FiguresParent parent, Vector3Int coordinatesInFiguresParent)
 		{
@@ -33,6 +37,14 @@ namespace GenerationData
 
 		public abstract IEnumerable<Figure> GetFiguresOnDirection();
 
-		public virtual void KnockOut() => IsKnockedOut = true;
+		public virtual void KnockOut()
+		{
+			if (_isKnockedOut)
+			{
+				throw new Exception("Cube can not be knocked out twice");
+			}
+			
+			_isKnockedOut = true;
+			OnKnockOut?.Invoke();}
 	}
 }
