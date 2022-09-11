@@ -35,55 +35,63 @@ namespace FigureGameObjects.InfinityLevel
 		
 		private void GenerateFigures()
 		{
-			int x = cubeSize.x, y = cubeSize.y, z = cubeSize.z;
-			if (x < 3 || y < 3 || z < 3)
+			if (cubeSize.x < 3 || cubeSize.y < 3 || cubeSize.z < 3)
 			{
 				throw new ArgumentException("For infinity level size must be more than 2");
 			}
 			
-			Figure[,,] figures = new Figure[x, y, z];
+			Figure[,,] figures = new Figure[cubeSize.x, cubeSize.y, cubeSize.z];
 			_figuresParent = new FiguresParent(figures, isDifficult);
-			Action<Figure> generationAction = isDifficult
-				? figure => figure.SetDifficultRandomDirection(GetNotAvailableDirections(figure).ToArray())
-				: figure => figure.SetRandomDirection(GetNotAvailableDirections(figure).ToArray());
+			Action<DirectedFigure> generationAction = isDifficult
+				? figure => figure.SetDifficultRandomDirection(GetNotAvailableDirection(figure))
+				: figure => figure.SetRandomDirection(GetNotAvailableDirection(figure));
 			
-			for (int i = 0; i < x; i++)
+			for (int x = 0; x < cubeSize.x; x++)
 			{
-				for (int j = 0; j < y; j++)
+				for (int y = 0; y < cubeSize.y; y++)
 				{
-					for (int k = 0; k < z; k++)
+					for (int z = 0; z < cubeSize.z; z++)
 					{
-						DirectedFigure cube = new DirectedFigure(_figuresParent, new Vector3Int(i, j, k));
-						if(!IsOnAnyBoder(cube)) continue;
+						DirectedFigure cube = new DirectedFigure(_figuresParent, new Vector3Int(x, y, z));
+						if(!IsOnAnyFace(cube)) continue;
 						
-						figures[i, j, k] = cube;
+						figures[x, y, z] = cube;
 						generationAction(cube);
 					}
 				}
 			}
 		}
 
-		private List<Direction> GetNotAvailableDirections(Figure figure)
+		/// <summary>
+		/// Возвращает "запрещённые" направления только для тех кубов, что стоят на грани, но не на ребре
+		/// </summary>
+		private Direction GetNotAvailableDirection(DirectedFigure figure)
 		{
-			List<Direction> result = new List<Direction>();
+			Direction notAvailableDirection = Direction.None;
+			
 			for (int i = 0; i < 3; i++)
 			{
 				if (figure.CoordinatesInFiguresParent[i] == 0)
 				{
-					result.Add((Direction)i);
+					if (notAvailableDirection != Direction.None) return Direction.None;
+					
+					notAvailableDirection = (Direction)i;
 				}
 				else if (figure.CoordinatesInFiguresParent[i] == figure.Parent.Length[i] - 1)
 				{
-					result.Add((Direction)i + 3);
+					if (notAvailableDirection != Direction.None) return Direction.None;
+					
+					notAvailableDirection = (Direction)(i + 3);
 				}
-
-				if (result.Count == 2) return new List<Direction>();
 			}
 			
-			return result;
+			return notAvailableDirection;
 		}
 
-		private bool IsOnAnyBoder(Figure figure)
+		/// <summary>
+		/// На грани куба?
+		/// </summary>
+		private bool IsOnAnyFace(Figure figure)
 		{
 			for (int i = 0; i < 3; i++)
 			{
