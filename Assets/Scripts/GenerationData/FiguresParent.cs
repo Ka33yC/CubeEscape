@@ -33,9 +33,13 @@ namespace GenerationData
 			}
 		}
 
-		private void FigureOnKnockOut()
+		private void FigureOnKnockOut(Figure knockedFigure)
 		{
 			_remaningFigures--;
+			int x = knockedFigure.CoordinatesInFiguresParent.x,
+				y = knockedFigure.CoordinatesInFiguresParent.y,
+				z = knockedFigure.CoordinatesInFiguresParent.z;
+			_figures[x, y, z] = null;
 			if(_remaningFigures != 0) return;
 			
 			OnAllFiguresKnocked?.Invoke();
@@ -74,7 +78,7 @@ namespace GenerationData
 			for (int i = iteratorStartValue; i != border; i += addedPerIteration)
 			{
 				Figure figureOnDirection = _figures[shift.x, shift.y, shift.z];
-				if (figureOnDirection != null)
+				if (figureOnDirection != null && !figureOnDirection.IsKnockedOut)
 				{
 					figuresOnDirection.Add(figureOnDirection);
 				}
@@ -83,7 +87,7 @@ namespace GenerationData
 			}
 
 			return from figure in figuresOnDirection
-				where !figure.IsKnockedOut
+				where figure != null && !figure.IsKnockedOut
 				select figure;
 		}
 
@@ -91,7 +95,7 @@ namespace GenerationData
 		{
 			HashSet<Figure> escapeStack = new HashSet<Figure>();
 			List<Figure> figuresOnDirection = new List<Figure>();
-			if (!figureToCheck.IsKnockedOut)
+			if (figureToCheck != null && !figureToCheck.IsKnockedOut)
 			{
 				figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
 			}

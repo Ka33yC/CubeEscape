@@ -13,7 +13,7 @@ namespace GenerationData
 
 		protected bool _isKnockedOut;
 		
-		public event Action OnKnockOut;
+		public event Action<Figure> OnKnockOut;
 		public IFigureGameObject FigureGameObject;
 
 
@@ -45,6 +45,7 @@ namespace GenerationData
 			}
 			
 			_isKnockedOut = true;
-			OnKnockOut?.Invoke();}
+			OnKnockOut?.Invoke(this);
+		}
 	}
 }

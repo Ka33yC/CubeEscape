@@ -33,7 +33,7 @@ namespace AutoSolve
 		{
 			foreach (Figure figure in figuresParent)
 			{
-				if (figure.IsKnockedOut) continue;
+				if (figure == null || figure.IsKnockedOut) continue;
 
 				HashSet<Figure> figuresToEscape = figuresParent.GetFiguresOnFiguresDirecion(figure);
 				figuresToEscape.Add(figure);
