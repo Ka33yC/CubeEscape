@@ -28,12 +28,12 @@ namespace GenerationData
 			{
 				if(figure == null) continue;
 
-				figure.OnKnockOut += FigureOnKnockOut;
+				figure.OnKnockOut += OnFigureKnockOut;
 				_remaningFigures++;
 			}
 		}
 
-		private void FigureOnKnockOut(Figure knockedFigure)
+		private void OnFigureKnockOut(Figure knockedFigure)
 		{
 			_remaningFigures--;
 			int x = knockedFigure.CoordinatesInFiguresParent.x,
@@ -57,7 +57,7 @@ namespace GenerationData
 			}
 		}
 
-		public IEnumerable<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
+		public HashSet<Figure> GetFiguresByDirection(Vector3Int coordinatesInFiguresParent, Direction direction)
 		{
 			HashSet<Figure> figuresOnDirection = new HashSet<Figure>();
 			if (direction == Direction.None) return figuresOnDirection;
@@ -86,20 +86,16 @@ namespace GenerationData
 				shift += convertedDirection;
 			}
 
-			return from figure in figuresOnDirection
-				where figure != null && !figure.IsKnockedOut
-				select figure;
+			return figuresOnDirection;
 		}
 
 		public HashSet<Figure> GetFiguresOnFiguresDirecion(Figure figureToCheck)
 		{
 			HashSet<Figure> escapeStack = new HashSet<Figure>();
 			List<Figure> figuresOnDirection = new List<Figure>();
-			if (figureToCheck != null && !figureToCheck.IsKnockedOut)
-			{
-				figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
-			}
-
+			if (figureToCheck == null || figureToCheck.IsKnockedOut) return escapeStack;
+			
+			figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
 			for (int i = 0; i < figuresOnDirection.Count; i++)
 			{
 				if (figureToCheck == figuresOnDirection[i])
