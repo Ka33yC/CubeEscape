@@ -69,7 +69,11 @@ namespace FigureGameObjects
 		{
 			_figurePhysics.SetNowSpeedToStart();
 			_figurePhysics.StartMoveTo(_startPosition + _directedFigure.DirectionVector3 * 20);
-			_figurePhysics.OnPositionReach += () => _directedFigure.KnockOut();
+			_figurePhysics.OnPositionReach += () =>
+			{
+				_directedFigure.KnockOut();
+				Destroy(gameObject);
+			};
 		}
 
 		public void StartMoveBack()

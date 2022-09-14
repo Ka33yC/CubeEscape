@@ -15,91 +15,44 @@ namespace FigureGameObjects.InfinityLevel
 		[SerializeField] protected CameraController cameraController;
 
 		private FiguresParent _figuresParent;
+		private InfinityLevelPart[] _infinityLevelParts;
 		
 		private void Awake()
 		{
-			GenerateFigures();
+		    if (cubeSize.x < 3 || cubeSize.y < 3 || cubeSize.z < 3)
+            {
+                throw new ArgumentException("For infinity level size must be more than 2");
+            }
+
+		    _infinityLevelParts = new InfinityLevelPart[3];
+		    for (int i = 0; i < _infinityLevelParts.Length; i++)
+		    {
+			    _infinityLevelParts[i] = new InfinityLevelPart(this, isDifficult);
+		    }
 		}
 		
 		private void Start()
 		{
-			foreach (Figure figure in _figuresParent)
+			Vector3 scaleDelta = new((float)(cubeSize.x - 2) / cubeSize.x, (float)(cubeSize.y - 2) / cubeSize.y,
+				(float)(cubeSize.z - 2) / cubeSize.z);
+			
+			_infinityLevelParts[0].Transform.SetParent(transform);
+			for (int i = 1; i < _infinityLevelParts.Length; i++)
 			{
-				if(figure == null) continue;
-                
-				Instantiate(cubePrefab, transform).Initialize(figure);
+				InfinityLevelPart infinityLevelPart = _infinityLevelParts[i];
+				
+				infinityLevelPart.Transform.SetParent(_infinityLevelParts[i - 1].Transform);
+				infinityLevelPart.Transform.localScale = scaleDelta;
+			}
+
+			foreach (InfinityLevelPart infinityLevelPart in _infinityLevelParts)
+			{
+				infinityLevelPart.GenerateFigures(cubeSize);
 			}
 
 			cameraController.SetSafetyPosition(cubeSize);
 		}
-		
-		private void GenerateFigures()
-		{
-			if (cubeSize.x < 3 || cubeSize.y < 3 || cubeSize.z < 3)
-			{
-				throw new ArgumentException("For infinity level size must be more than 2");
-			}
-			
-			Figure[,,] figures = new Figure[cubeSize.x, cubeSize.y, cubeSize.z];
-			_figuresParent = new FiguresParent(figures, isDifficult);
-			Action<DirectedFigure> generationAction = isDifficult
-				? figure => figure.SetDifficultRandomDirection(GetNotAvailableDirection(figure))
-				: figure => figure.SetRandomDirection(GetNotAvailableDirection(figure));
-			
-			for (int x = 0; x < cubeSize.x; x++)
-			{
-				for (int y = 0; y < cubeSize.y; y++)
-				{
-					for (int z = 0; z < cubeSize.z; z++)
-					{
-						DirectedFigure cube = new DirectedFigure(_figuresParent, new Vector3Int(x, y, z));
-						if(!IsOnAnyFace(cube)) continue;
-						
-						figures[x, y, z] = cube;
-						generationAction(cube);
-					}
-				}
-			}
-		}
 
-		/// <summary>
-		/// Возвращает "запрещённые" направления только для тех кубов, что стоят на грани, но не на ребре
-		/// </summary>
-		private Direction GetNotAvailableDirection(DirectedFigure figure)
-		{
-			Direction notAvailableDirection = Direction.None;
-			
-			for (int i = 0; i < 3; i++)
-			{
-				if (figure.CoordinatesInFiguresParent[i] == 0)
-				{
-					if (notAvailableDirection != Direction.None) return Direction.None;
-					
-					notAvailableDirection = (Direction)i;
-				}
-				else if (figure.CoordinatesInFiguresParent[i] == figure.Parent.Length[i] - 1)
-				{
-					if (notAvailableDirection != Direction.None) return Direction.None;
-					
-					notAvailableDirection = (Direction)(i + 3);
-				}
-			}
-			
-			return notAvailableDirection;
-		}
-
-		/// <summary>
-		/// На грани куба?
-		/// </summary>
-		private bool IsOnAnyFace(Figure figure)
-		{
-			for (int i = 0; i < 3; i++)
-			{
-				if (figure.CoordinatesInFiguresParent[i] == 0 ||
-				    figure.CoordinatesInFiguresParent[i] == figure.Parent.Length[i] - 1) return true;
-			}
-
-			return false;
-		}
+		public CubeGameObject InstantiateCube() => Instantiate(cubePrefab);
 	}
 }
