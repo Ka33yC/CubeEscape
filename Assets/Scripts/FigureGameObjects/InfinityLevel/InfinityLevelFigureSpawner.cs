@@ -16,7 +16,11 @@ namespace FigureGameObjects.InfinityLevel
 
 		private FiguresParent _figuresParent;
 		private InfinityLevelPart[] _infinityLevelParts;
-		
+
+		public InfinityLevelPart LastInfinityLevelPart { get; private set; }
+
+		public CubeGameObject InstantiateCube() => Instantiate(cubePrefab);
+
 		private void Awake()
 		{
 		    if (cubeSize.x < 3 || cubeSize.y < 3 || cubeSize.z < 3)
@@ -33,26 +37,30 @@ namespace FigureGameObjects.InfinityLevel
 		
 		private void Start()
 		{
-			Vector3 scaleDelta = new((float)(cubeSize.x - 2) / cubeSize.x, (float)(cubeSize.y - 2) / cubeSize.y,
-				(float)(cubeSize.z - 2) / cubeSize.z);
-			
-			_infinityLevelParts[0].Transform.SetParent(transform);
 			for (int i = 1; i < _infinityLevelParts.Length; i++)
 			{
-				InfinityLevelPart infinityLevelPart = _infinityLevelParts[i];
-				
-				infinityLevelPart.Transform.SetParent(_infinityLevelParts[i - 1].Transform);
-				infinityLevelPart.Transform.localScale = scaleDelta;
+				_infinityLevelParts[i].SetParent(_infinityLevelParts[i - 1]);
 			}
-
+			
 			foreach (InfinityLevelPart infinityLevelPart in _infinityLevelParts)
 			{
 				infinityLevelPart.GenerateFigures(cubeSize);
+				infinityLevelPart.SetScaleWithCubeSize();
+				infinityLevelPart.OnLevelComplete += LevelUp;
 			}
 
+			LastInfinityLevelPart = _infinityLevelParts[_infinityLevelParts.Length - 1];
 			cameraController.SetSafetyPosition(cubeSize);
 		}
 
-		public CubeGameObject InstantiateCube() => Instantiate(cubePrefab);
+		private void LevelUp(InfinityLevelPart infinityLevelPart)
+		{
+			infinityLevelPart.UpChildInHierarchy();
+			infinityLevelPart.SetParent(LastInfinityLevelPart);
+			infinityLevelPart.GenerateFigures(cubeSize);
+			infinityLevelPart.SetScaleWithCubeSize();
+
+			LastInfinityLevelPart = infinityLevelPart;
+		}
 	}
 }

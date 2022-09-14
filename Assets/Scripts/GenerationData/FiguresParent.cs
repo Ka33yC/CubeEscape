@@ -8,32 +8,31 @@ namespace GenerationData
 {
 	public class FiguresParent
 	{
-		private readonly Figure[,,] _figures;
-		public readonly int[] Length;
-
+		protected readonly Figure[,,] _figures;
+		protected Action<Figure> _generationAction;
+		
 		private int _remaningFigures;
+		
+		public readonly int[] Length;
 		public event Action OnAllFiguresKnocked;
 
 		public FiguresParent(Figure[,,] figures, bool isDifficult)
 		{
 			_figures = figures;
+			
+			_generationAction = isDifficult
+				? figure => figure.SetDifficultRandomDirection()
+				: figure => figure.SetRandomDirection();
+			
 			Length = new int[]
 			{
 				_figures.GetLength(0),
 				_figures.GetLength(1),
 				_figures.GetLength(2),
 			};
-			
-			foreach (Figure figure in _figures)
-			{
-				if(figure == null) continue;
-
-				figure.OnKnockOut += OnFigureKnockOut;
-				_remaningFigures++;
-			}
 		}
 
-		private void OnFigureKnockOut(Figure knockedFigure)
+		protected void OnFigureKnockOut(Figure knockedFigure)
 		{
 			_remaningFigures--;
 			int x = knockedFigure.CoordinatesInFiguresParent.x,
@@ -108,6 +107,35 @@ namespace GenerationData
 			escapeStack.AddRange(figuresOnDirection);
 
 			return escapeStack;
+		}
+
+		public virtual void GenerateFigures()
+		{
+			for (int i = 0; i < Length[0]; i++)
+			{
+				for (int j = 0; j < Length[1]; j++)
+				{
+					for (int k = 0; k < Length[2]; k++)
+					{
+						DirectedFigure cube = new DirectedFigure(this, new Vector3Int(i, j, k));
+						_figures[i, j, k] = cube;
+						_generationAction(cube);
+					}
+				}
+			}
+
+			SubscribeOnKnockOutChecker();
+		}
+
+		protected void SubscribeOnKnockOutChecker()
+		{
+			foreach (Figure figure in _figures)
+			{
+				if(figure == null) continue;
+
+				figure.OnKnockOut += OnFigureKnockOut;
+				_remaningFigures++;
+			}
 		}
 	}
 }
