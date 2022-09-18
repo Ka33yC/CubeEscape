@@ -1,12 +1,12 @@
-﻿using GenerationData;
+﻿using System;
+using GenerationData;
 using UnityEngine;
 
 namespace FigureGameObjects.InfinityLevel
 {
 	public class InfinityFiguresParent : FiguresParent
 	{
-		private readonly GameObject _infinityLevelPartGameObject;
-		private InfinityFiguresParent _child;
+		private readonly Action<DirectedFigure> _generationAction;
 		
 		public InfinityFiguresParent(Figure[,,] figures, bool isDifficult) : base(figures, isDifficult)
 		{
@@ -38,7 +38,7 @@ namespace FigureGameObjects.InfinityLevel
 		/// <summary>
 		/// Возвращает "запрещённые" направления только для тех кубов, что стоят на грани, но не на ребре
 		/// </summary>
-		private Direction GetNotAvailableDirection(Figure figure)
+		private Direction GetNotAvailableDirection(DirectedFigure figure)
 		{
 			Direction notAvailableDirection = Direction.None;
 			
@@ -64,7 +64,7 @@ namespace FigureGameObjects.InfinityLevel
 		/// <summary>
 		/// На грани куба?
 		/// </summary>
-		private bool IsOnAnyFace(Figure figure)
+		private bool IsOnAnyFace(DirectedFigure figure)
 		{
 			for (int i = 0; i < 3; i++)
 			{

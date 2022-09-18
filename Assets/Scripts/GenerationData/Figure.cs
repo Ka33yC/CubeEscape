@@ -45,6 +45,7 @@ namespace GenerationData
 			}
 			
 			_isKnockedOut = true;
+			Parent[CoordinatesInFiguresParent] = null;
 			OnKnockOut?.Invoke(this);
 		}
 	}

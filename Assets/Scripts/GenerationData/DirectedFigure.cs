@@ -26,6 +26,7 @@ namespace GenerationData
 		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) :
 			base(parent, coordinatesInFiguresParent)
 		{
+			parent[coordinatesInFiguresParent] = this;
 		}
 
 		public override bool SetRandomDirection(params Direction[] notAvailableDirections)

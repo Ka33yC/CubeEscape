@@ -9,7 +9,7 @@ namespace GenerationData
 	public class FiguresParent
 	{
 		protected readonly Figure[,,] _figures;
-		protected Action<Figure> _generationAction;
+		private readonly Action<Figure> _generationAction;
 		
 		private int _remaningFigures;
 		
@@ -32,21 +32,25 @@ namespace GenerationData
 			};
 		}
 
-		protected void OnFigureKnockOut(Figure knockedFigure)
+		protected virtual void OnFigureKnockOut(Figure knockedFigure)
 		{
 			_remaningFigures--;
-			int x = knockedFigure.CoordinatesInFiguresParent.x,
-				y = knockedFigure.CoordinatesInFiguresParent.y,
-				z = knockedFigure.CoordinatesInFiguresParent.z;
-			_figures[x, y, z] = null;
 			if(_remaningFigures != 0) return;
 			
 			OnAllFiguresKnocked?.Invoke();
 		}
 
-		public Figure this[int x, int y, int z] => _figures[x, y, z];
+		public Figure this[int x, int y, int z]
+		{
+			get => _figures[x, y, z]; 
+			set => _figures[x, y, z] = value; 
+		}
 
-		public Figure this[Vector3Int coordinates] => _figures[coordinates.x, coordinates.y, coordinates.z];
+		public Figure this[Vector3Int coordinates]
+		{
+			get => _figures[coordinates.x, coordinates.y, coordinates.z]; 
+			set => _figures[coordinates.x, coordinates.y, coordinates.z] = value; 
+		}
 
 		public IEnumerator<Figure> GetEnumerator()
 		{
@@ -118,7 +122,6 @@ namespace GenerationData
 					for (int k = 0; k < Length[2]; k++)
 					{
 						DirectedFigure cube = new DirectedFigure(this, new Vector3Int(i, j, k));
-						_figures[i, j, k] = cube;
 						_generationAction(cube);
 					}
 				}
