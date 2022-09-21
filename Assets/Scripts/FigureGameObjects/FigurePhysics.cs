@@ -11,6 +11,7 @@ namespace FigureGameObjects
 		private Transform _transform;
 		private float _nowSpeed;
 		private Vector3 _direction;
+		private float _nowAccelerationTime;
 
 		private event Action OnFixedUpdate;
 		public event Action OnPositionReach;
@@ -57,10 +58,17 @@ namespace FigureGameObjects
 			OnCollision?.Invoke(figureGameObject);
 		}
 
-		public void SetNowSpeedToStart() => NowSpeed = speedParameters.StartSpeed;
+		public void SetNowSpeedToStart()
+		{
+			NowSpeed = speedParameters.StartSpeed;
+			_nowAccelerationTime = 0;
+		}
 
-		private void UpSpeedOnAcceleration() =>
-			NowSpeed += NowSpeed * speedParameters.Acceleration * Time.fixedDeltaTime;
+		private void UpSpeedOnAcceleration()
+		{
+			_nowAccelerationTime += Time.fixedDeltaTime;
+			NowSpeed += NowSpeed * speedParameters.Evaluate(_nowAccelerationTime) * Time.fixedDeltaTime;
+		}
 
 		public void StartMoveTo(Vector3 endPosition)
 		{

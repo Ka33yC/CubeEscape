@@ -12,6 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88aa4c60e7747108f42f0b362abe81c, type: 3}
   m_Name: CubeSpeedParameters
   m_EditorClassIdentifier: 
-  startSpeed: 20
+  startSpeed: 2
   acceleration: 4
+  accelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 0.5879909
+      outSlope: 0.23041496
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.37363446
+      outWeight: 0.08877943
+    - serializedVersion: 3
+      time: 6
+      value: 1
+      inSlope: 0.002011378
+      outSlope: 0.002011378
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0038631612
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   maxSpeed: 20
