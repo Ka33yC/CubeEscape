@@ -1,7 +1,5 @@
 ﻿#if UNITY_EDITOR
 
-using System;
-using GenerationData;
 using UnityEngine;
 
 namespace LevelGeneration

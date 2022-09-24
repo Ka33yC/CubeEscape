@@ -1,6 +1,4 @@
-﻿using GenerationData;
-
-namespace LevelGeneration
+﻿namespace LevelGeneration
 {
 	public class LevelParameters
 	{
