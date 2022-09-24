@@ -21,12 +21,7 @@ namespace LevelGeneration
 		public void Save()
 		{
 			LevelParameters levelParameters = _levelBuilder.ConstructLevelParameters();
-			JsonSerializer serializer = new JsonSerializer();
-
-			using StreamWriter sw = new StreamWriter(Path.Combine(_pathToStreamingAssets, fileName));
-			using JsonWriter writer = new JsonTextWriter(sw);
-			
-			serializer.Serialize(writer, levelParameters);
+			File.WriteAllText(Path.Combine(_pathToStreamingAssets, fileName), JsonConvert.SerializeObject(levelParameters));
 		}
 	}
 }

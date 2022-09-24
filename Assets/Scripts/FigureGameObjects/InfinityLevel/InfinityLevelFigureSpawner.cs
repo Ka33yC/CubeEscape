@@ -44,17 +44,22 @@ namespace FigureGameObjects.InfinityLevel
 			
 			foreach (InfinityLevelPart infinityLevelPart in _infinityLevelParts)
 			{
-				LevelParameters levelParameters = new LevelParameters();
-				levelParameters.DirectedFigures = GetDirectedFiguresByCubeSize();
-				levelParameters.IsDifficultGeneration = isDifficult;
-				
-				infinityLevelPart.GenerateFigures(levelParameters);
+				infinityLevelPart.GenerateFigures(GetLevelParameters());
 				infinityLevelPart.SetScaleWithCubeSize();
 				infinityLevelPart.OnLevelComplete += LevelUp;
 			}
 
 			LastInfinityLevelPart = _infinityLevelParts[_infinityLevelParts.Length - 1];
 			cameraController.SetSafetyPosition(cubeSize);
+		}
+
+		private LevelParameters GetLevelParameters()
+		{
+			LevelParameters levelParameters = new LevelParameters();
+			levelParameters.DirectedFigures = GetDirectedFiguresByCubeSize();
+			levelParameters.IsDifficultGeneration = isDifficult;
+
+			return levelParameters;
 		}
 		
 		private bool[,,] GetDirectedFiguresByCubeSize()
@@ -78,12 +83,7 @@ namespace FigureGameObjects.InfinityLevel
 		{
 			infinityLevelPart.UpChildInHierarchy();
 			infinityLevelPart.SetParent(LastInfinityLevelPart);
-			
-			LevelParameters levelParameters = new LevelParameters();
-			levelParameters.DirectedFigures = GetDirectedFiguresByCubeSize();
-			levelParameters.IsDifficultGeneration = isDifficult;
-			
-			infinityLevelPart.GenerateFigures(levelParameters);
+			infinityLevelPart.GenerateFigures(GetLevelParameters());
 			infinityLevelPart.SetScaleWithCubeSize();
 
 			LastInfinityLevelPart = infinityLevelPart;

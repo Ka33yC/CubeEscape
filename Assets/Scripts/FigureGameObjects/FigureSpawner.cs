@@ -22,21 +22,16 @@ namespace FigureGameObjects
         {
             if (string.IsNullOrEmpty(levelFileName))
             {
-                GenerateFiguresByCubeSize();
+                LevelParameters levelParameters = new LevelParameters();
+                levelParameters.DirectedFigures = GetDirectedFiguresByCubeSize();
+                levelParameters.IsDifficultGeneration = isDifficult;
+                FiguresParent = new FiguresParent(levelParameters);
             }
             else
             {
                 FiguresParent = new FiguresParent(JsonConvert.DeserializeObject<LevelParameters>(
                     File.ReadAllText(Path.Combine(Application.streamingAssetsPath, levelFileName))));
             }
-        }
-
-        private void GenerateFiguresByCubeSize()
-        {
-            LevelParameters levelParameters = new LevelParameters();
-            levelParameters.DirectedFigures = GetDirectedFiguresByCubeSize();
-            levelParameters.IsDifficultGeneration = isDifficult;
-            FiguresParent = new FiguresParent(levelParameters);
         }
         
         private bool[,,] GetDirectedFiguresByCubeSize()
