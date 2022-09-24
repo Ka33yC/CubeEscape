@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &251858479
 Transform:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1af822b24f439abb8e6b76c30e7529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeSize: {x: 4, y: 4, z: 4}
+  cubeSize: {x: 7, y: 7, z: 7}
   isDifficult: 1
   cubePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
   cameraController: {fileID: 963194229}
@@ -232,7 +232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &720962886
 Transform:
   m_ObjectHideFlags: 0
@@ -263,6 +263,7 @@ MonoBehaviour:
   cubeSize: {x: 5, y: 5, z: 5}
   isDifficult: 1
   cubePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
+  levelFileName: lvl1.json
   cameraController: {fileID: 963194229}
 --- !u!114 &720962888
 MonoBehaviour:

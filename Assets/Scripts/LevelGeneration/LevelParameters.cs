@@ -6,6 +6,5 @@ namespace LevelGeneration
 	{
 		public bool IsDifficultGeneration;
 		public bool[,,] DirectedFigures;
-		public Direction[,,] Directions;
 	}
 }

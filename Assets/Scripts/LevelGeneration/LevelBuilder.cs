@@ -1,7 +1,5 @@
 ﻿#if UNITY_EDITOR
 
-using System;
-using GenerationData;
 using UnityEngine;
 
 namespace LevelGeneration
@@ -10,7 +8,6 @@ namespace LevelGeneration
 	{
 		[SerializeField] private bool isDifficultGeneration;
 		[SerializeField, Min(1)] private Vector3Int size;
-		[SerializeField] private bool saveDirections;
 		[SerializeField] private DirectedFigureForLevelBuilder directedFigurePrefab;
 
 		private DirectedFigureForLevelBuilder[,,] _directedFigures;
@@ -41,7 +38,7 @@ namespace LevelGeneration
 			DirectedFigureForLevelBuilder[,,] directedFigures =
 				new DirectedFigureForLevelBuilder[sizes.x, sizes.y, sizes.z];
 
-			Vector3Int shift = new Vector3Int(sizes.x / 2 + 1, sizes.y / 2 + 1, sizes.z / 2 + 1);
+			Vector3 shift = new Vector3(((float)sizes.x - 1) / 2, ((float)sizes.y - 1) / 2, ((float)sizes.z - 1) / 2);
 			
 			for (int x = 0; x < sizes.x; x++)
 			{
@@ -51,7 +48,7 @@ namespace LevelGeneration
 					{
 						DirectedFigureForLevelBuilder instantiatedFigure = Instantiate(directedFigurePrefab);
 						instantiatedFigure.SetParent(transform);
-						instantiatedFigure.Position = new Vector3Int(x, y, z) + shift;
+						instantiatedFigure.Position = new Vector3Int(x, y, z) - shift;
 						
 						directedFigures[x, y, z] = instantiatedFigure;
 					}
@@ -66,11 +63,7 @@ namespace LevelGeneration
 			LevelParameters result = new LevelParameters();
 			result.IsDifficultGeneration = isDifficultGeneration;
 			result.DirectedFigures = new bool[size.x, size.y, size.z];
-			if (saveDirections)
-			{
-				result.Directions = new Direction[size.x, size.y, size.z];
-			}
-			
+
 			for (int x = 0; x < size.x; x++)
 			{
 				for (int y = 0; y < size.y; y++)
@@ -79,13 +72,6 @@ namespace LevelGeneration
 					{
 						DirectedFigureForLevelBuilder figure = _directedFigures[x, y, z];
 						result.DirectedFigures[x, y, z] = figure.Exist;
-						if (!figure.Exist || !saveDirections) continue;
-						
-						result.Directions[x, y, z] = figure.Direction;
-						if (figure.Direction == Direction.None)
-						{
-							throw new Exception($"Direction.None can't be save at cube ({x}, {y}, {z})");
-						}
 					}
 				}
 			}

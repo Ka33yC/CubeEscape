@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LevelGeneration;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace GenerationData
 {
 	public class FiguresParent
 	{
+		protected readonly LevelParameters _levelParameters;
 		protected readonly Figure[,,] _figures;
 		private readonly Action<Figure> _generationAction;
 		
@@ -15,20 +17,21 @@ namespace GenerationData
 		public readonly int[] Length;
 		public event Action OnAllFiguresKnocked;
 
-		public FiguresParent(Figure[,,] figures, bool isDifficult)
+		public FiguresParent(LevelParameters levelParameters)
 		{
-			_figures = figures;
-			
-			_generationAction = isDifficult
-				? figure => figure.SetDifficultRandomDirection()
-				: figure => figure.SetRandomDirection();
-			
 			Length = new int[]
 			{
-				_figures.GetLength(0),
-				_figures.GetLength(1),
-				_figures.GetLength(2),
+				levelParameters.DirectedFigures.GetLength(0),
+				levelParameters.DirectedFigures.GetLength(1),
+				levelParameters.DirectedFigures.GetLength(2),
 			};
+
+			_figures = new Figure[Length[0], Length[1], Length[2]];
+			_generationAction = levelParameters.IsDifficultGeneration
+				? figure => figure.SetDifficultRandomDirection()
+				: figure => figure.SetRandomDirection();
+
+			_levelParameters = levelParameters;
 		}
 
 		protected virtual void OnFigureKnockOut(Figure knockedFigure)
@@ -112,15 +115,17 @@ namespace GenerationData
 			return escapeStack;
 		}
 
-		public virtual void GenerateFigures()
+		public virtual void GenerateDirectedFigure()
 		{
-			for (int i = 0; i < Length[0]; i++)
+			for (int x = 0; x < Length[0]; x++)
 			{
-				for (int j = 0; j < Length[1]; j++)
+				for (int y = 0; y < Length[1]; y++)
 				{
-					for (int k = 0; k < Length[2]; k++)
+					for (int z = 0; z < Length[2]; z++)
 					{
-						DirectedFigure cube = new DirectedFigure(this, new Vector3Int(i, j, k));
+						if(!_levelParameters.DirectedFigures[x,y,z]) continue;
+						
+						DirectedFigure cube = new DirectedFigure(this, new Vector3Int(x, y, z));
 						_generationAction(cube);
 					}
 				}

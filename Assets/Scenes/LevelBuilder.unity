@@ -170,7 +170,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDifficultGeneration: 0
   size: {x: 3, y: 3, z: 3}
-  saveDirections: 0
   directedFigurePrefab: {fileID: -1738838828950098484, guid: a8b91875cde609d439ff9d33230ee8da, type: 3}
 --- !u!114 &253605108
 MonoBehaviour:
@@ -184,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ebe41785fdc4428b8eb9aa1220eac38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: j1.json
+  fileName: lvl1.json
 --- !u!1 &1538025661
 GameObject:
   m_ObjectHideFlags: 0

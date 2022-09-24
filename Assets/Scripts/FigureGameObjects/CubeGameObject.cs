@@ -89,7 +89,7 @@ namespace FigureGameObjects
 			_figurePhysics.StopMove();
 		}
 
-		public Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent,
+		public static Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent,
 			Vector3Int coordinatesInFiguresParent)
 		{
 			float xCenterCoordinates = -((float)figuresParent.Length[0] - 1) / 2;

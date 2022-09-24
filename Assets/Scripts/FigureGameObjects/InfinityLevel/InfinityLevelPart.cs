@@ -1,5 +1,6 @@
 ﻿using System;
 using GenerationData;
+using LevelGeneration;
 using UnityEngine;
 
 namespace FigureGameObjects.InfinityLevel
@@ -7,7 +8,6 @@ namespace FigureGameObjects.InfinityLevel
 	public class InfinityLevelPart
 	{
 		private readonly InfinityLevelFigureSpawner _infinityLevelSpawner;
-		private readonly bool _isDifficult;
 		private readonly GameObject _infinityLevelPartGameObject;
 
 		private InfinityLevelPart _child;
@@ -16,10 +16,9 @@ namespace FigureGameObjects.InfinityLevel
 
 		public event Action<InfinityLevelPart> OnLevelComplete;
 
-		public InfinityLevelPart(InfinityLevelFigureSpawner infinityLevelSpawner, bool isDifficult)
+		public InfinityLevelPart(InfinityLevelFigureSpawner infinityLevelSpawner)
 		{
 			_infinityLevelSpawner = infinityLevelSpawner;
-			_isDifficult = isDifficult;
 			_infinityLevelPartGameObject = new GameObject("InfinityLevelPart");
 		}
 
@@ -31,11 +30,10 @@ namespace FigureGameObjects.InfinityLevel
 			Transform.SetParent(parent.Transform, false);
 		}
 
-		public void GenerateFigures(Vector3Int cubeSize)
+		public void GenerateFigures(LevelParameters levelParameters)
 		{
-			_infinityFiguresParent =
-				new InfinityFiguresParent(new Figure[cubeSize.x, cubeSize.y, cubeSize.z], _isDifficult);
-			_infinityFiguresParent.GenerateFigures();
+			_infinityFiguresParent = new InfinityFiguresParent(levelParameters);
+			_infinityFiguresParent.GenerateDirectedFigure();
 
 			foreach (Figure figure in _infinityFiguresParent)
 			{
