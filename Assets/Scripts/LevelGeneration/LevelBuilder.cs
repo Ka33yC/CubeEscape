@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using System;
 using GenerationData;
 using UnityEngine;
 
@@ -13,6 +14,11 @@ namespace LevelGeneration
 		[SerializeField] private DirectedFigureForLevelBuilder directedFigurePrefab;
 
 		private DirectedFigureForLevelBuilder[,,] _directedFigures;
+
+		private void Awake()
+		{
+			Generate();
+		}
 
 		public void Generate()
 		{
@@ -71,10 +77,11 @@ namespace LevelGeneration
 				{
 					for (int z = 0; z < size.z; z++)
 					{
-						result.DirectedFigures[x, y, z] = _directedFigures[x, y, z].Exist;
-						if (!saveDirections) continue;
+						DirectedFigureForLevelBuilder figure = _directedFigures[x, y, z];
+						result.DirectedFigures[x, y, z] = figure.Exist;
+						if (!figure.Exist || !saveDirections) continue;
 						
-						result.Directions[x, y, z] = _directedFigures[x, y, z].Direction;
+						result.Directions[x, y, z] = figure.Direction;
 					}
 				}
 			}

@@ -13,7 +13,7 @@ namespace LevelGeneration.EditorButtons
 			DrawDefaultInspector();
 			DirectedFigureForLevelBuilder directedFigureForLevelBuilder = (DirectedFigureForLevelBuilder)target;
 
-			if (GUILayout.Button("Reverse Exist State"))
+			if (GUILayout.Button("Enable/Disable Figure"))
 			{
 				directedFigureForLevelBuilder.ReverseExistState();
 			}
