@@ -82,6 +82,10 @@ namespace LevelGeneration
 						if (!figure.Exist || !saveDirections) continue;
 						
 						result.Directions[x, y, z] = figure.Direction;
+						if (figure.Direction == Direction.None)
+						{
+							throw new Exception($"Direction.None can't be save at cube ({x}, {y}, {z})");
+						}
 					}
 				}
 			}
