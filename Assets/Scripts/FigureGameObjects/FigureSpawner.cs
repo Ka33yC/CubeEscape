@@ -36,7 +36,7 @@ namespace FigureGameObjects
         
         private bool[,,] GetDirectedFiguresByCubeSize()
         {
-            bool[,,] directedFigures = new bool[cubeSize.x, cubeSize.x, cubeSize.x];
+            bool[,,] directedFigures = new bool[cubeSize.x, cubeSize.y, cubeSize.z];
             for (int x = 0; x < cubeSize.x; x++)
             {
                 for (int y = 0; y < cubeSize.y; y++)
