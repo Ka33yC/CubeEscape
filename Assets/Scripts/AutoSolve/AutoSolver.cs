@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FigureGameObjects;
@@ -35,23 +36,14 @@ namespace AutoSolve
 			{
 				if (figure == null || figure.IsKnockedOut) continue;
 
-				HashSet<Figure> figuresToEscape = figuresParent.GetFiguresOnFiguresDirecion(figure);
+				List<Figure> figuresToEscape = figuresParent.GetFiguresOnFiguresDirecion(figure).ToList();
 				figuresToEscape.Add(figure);
 
 				foreach (Figure figureToEscape in figuresToEscape)
 				{
 					figureToEscape.FigureGameObject.Escape();
-					await WaitFor((int)(cooldownBetweenEscape * 1000));
+					await Task.Delay((int)(cooldownBetweenEscape * 1000));
 				}
-			}
-		}
-
-		private async Task WaitFor(int millieseconds)
-		{
-			Task waitTask = Task.Run(() => Thread.Sleep(millieseconds));
-			while (!waitTask.IsCompleted)
-			{
-				await Task.Yield();
 			}
 		}
 	}

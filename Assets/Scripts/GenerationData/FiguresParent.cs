@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LevelGeneration;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -93,26 +94,37 @@ namespace GenerationData
 
 			return figuresOnDirection;
 		}
-
+		
+		/// <returns>Result not contains figureToCheck</returns>
 		public HashSet<Figure> GetFiguresOnFiguresDirecion(Figure figureToCheck)
 		{
-			HashSet<Figure> escapeStack = new HashSet<Figure>();
-			List<Figure> figuresOnDirection = new List<Figure>();
-			if (figureToCheck == null || figureToCheck.IsKnockedOut) return escapeStack;
-			
-			figuresOnDirection.AddRange(figureToCheck.GetFiguresOnDirection());
-			for (int i = 0; i < figuresOnDirection.Count; i++)
-			{
-				if (figureToCheck == figuresOnDirection[i])
-					throw new ArgumentException("Невозможно получить все Figure, т.к. фигура вовзаращется сама в себя");
+			HashSet<Figure> checkedFigures = new HashSet<Figure>();
+			if (figureToCheck == null || figureToCheck.IsKnockedOut) return checkedFigures;
 
-				figuresOnDirection.AddRange(figuresOnDirection[i].GetFiguresOnDirection());
+			var figuresOnDirection = figureToCheck.GetFiguresOnDirection().Reverse();
+			foreach (Figure figure in figuresOnDirection)
+			{
+				GetFiguresOnFiguresDirecion(figure, figureToCheck, checkedFigures);
+			}
+			
+			return checkedFigures;
+		}
+		
+		private void GetFiguresOnFiguresDirecion(Figure figureToCheck, Figure startFigure, HashSet<Figure> checkedFigures)
+		{
+			if (startFigure == figureToCheck)
+			{
+				throw new ArgumentException("Вернулись к тому с чего начинали");
+			}
+			if (checkedFigures.Contains(figureToCheck)) return;
+
+			var figuresOnDirection = figureToCheck.GetFiguresOnDirection().Reverse();
+			foreach (Figure figure in figuresOnDirection)
+			{
+				GetFiguresOnFiguresDirecion(figure, startFigure, checkedFigures);
 			}
 
-			figuresOnDirection.Reverse();
-			escapeStack.AddRange(figuresOnDirection);
-
-			return escapeStack;
+			checkedFigures.Add(figureToCheck);
 		}
 
 		public virtual void GenerateDirectedFigure()

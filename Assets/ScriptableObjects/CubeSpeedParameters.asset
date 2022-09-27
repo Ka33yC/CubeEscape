@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: CubeSpeedParameters
   m_EditorClassIdentifier: 
   startSpeed: 2
-  acceleration: 4
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
