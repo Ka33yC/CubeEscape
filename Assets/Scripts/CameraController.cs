@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
 
     private Transform _transform;
     private Camera _camera;
+    private float _minApproximate;
     private float _maxApproximate;
 
     private Vector3 _targetSize;
@@ -47,7 +48,7 @@ public class CameraController : MonoBehaviour
         Vector3 newPosition = _transform.position + lookPoint * (scrollDelta * approximateSensitivity);
 
         float magnitudeToTarget = (newPosition - target.position).magnitude;
-        if(magnitudeToTarget > _maxApproximate || magnitudeToTarget < minApproximate) return;
+        if(magnitudeToTarget > _maxApproximate || magnitudeToTarget < _minApproximate) return;
         
         _transform.position = newPosition;
     }
@@ -66,10 +67,10 @@ public class CameraController : MonoBehaviour
         _targetSize = targetSize;
         float halfOfParentSizeMagnitude = _targetSize.magnitude * 0.5f;
 
-        minApproximate = halfOfParentSizeMagnitude > minApproximate ? halfOfParentSizeMagnitude : minApproximate;
-        _maxApproximate = minApproximate * 3;
+        _minApproximate = halfOfParentSizeMagnitude > minApproximate ? halfOfParentSizeMagnitude : minApproximate;
+        _maxApproximate = _minApproximate * 4;
 
-        float mediumApproximate = Mathf.Clamp(0.5f, minApproximate, _maxApproximate);
+        float mediumApproximate = _minApproximate * 2;
         _transform.position = target.position + new Vector3(mediumApproximate, mediumApproximate, mediumApproximate);
         _transform.LookAt(target);
     }
