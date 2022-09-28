@@ -11,6 +11,7 @@ namespace FigureGameObjects
 	{
 		[SerializeField] private CubeAnimatorParameters cubeAnimatorParameters;
 		[SerializeField] private Transform cubeMesh;
+		[SerializeField] private float escapeDistance = 10;
 
 		private FigurePhysics _figurePhysics;
 		private CubeAnimator _cubeAnimator;
@@ -29,8 +30,8 @@ namespace FigureGameObjects
 				_directedFigure.FigureGameObject = this;
 				_startPosition = FigureCoordinatesToWorldPosition(_directedFigure.Parent,
 					_directedFigure.CoordinatesInFiguresParent);
-				transform.localPosition = _startPosition;
-				transform.localRotation = _directedFigure.Direction.ToQuaternion();
+				_figurePhysics.Position = _startPosition;
+				_figurePhysics.Rotation = _directedFigure.Direction.ToQuaternion();
 			}
 		}
 
@@ -67,11 +68,16 @@ namespace FigureGameObjects
 
 		public void StartMoveForward()
 		{
+			int axis = _directedFigure.Direction.GetAxisIndex();
+			Vector3 endPosition = _startPosition;
+			endPosition[axis] = FigureCoordinatesToWorldPosition(_directedFigure.Parent, _directedFigure.GetBorderPosition())[axis];
+			endPosition += (Vector3)_directedFigure.Direction.ToVector() * escapeDistance;
+				
 			_figurePhysics.SetNowSpeedToStart();
-			_figurePhysics.StartMoveTo(_startPosition + _directedFigure.DirectionVector3 * 20);
+			_figurePhysics.StartMoveTo(endPosition);
 			_figurePhysics.OnPositionReach += () =>
 			{
-				_directedFigure.KnockOut();
+				DirectedFigure.KnockOut();
 				Destroy(gameObject);
 			};
 		}
@@ -89,15 +95,14 @@ namespace FigureGameObjects
 			_figurePhysics.StopMove();
 		}
 
-		public static Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent,
-			Vector3Int coordinatesInFiguresParent)
+		public static Vector3 FigureCoordinatesToWorldPosition(FiguresParent figuresParent, Vector3Int coordinates)
 		{
 			float xCenterCoordinates = -((float)figuresParent.Length[0] - 1) / 2;
 			float yCenterCoordinates = -((float)figuresParent.Length[1] - 1) / 2;
 			float zCenterCoordinates = -((float)figuresParent.Length[2] - 1) / 2;
 
-			return new Vector3(xCenterCoordinates + coordinatesInFiguresParent.x,
-				yCenterCoordinates + coordinatesInFiguresParent.y, zCenterCoordinates + coordinatesInFiguresParent.z);
+			return new Vector3(xCenterCoordinates + coordinates.x,
+				yCenterCoordinates + coordinates.y, zCenterCoordinates + coordinates.z);
 		}
 	}
 }

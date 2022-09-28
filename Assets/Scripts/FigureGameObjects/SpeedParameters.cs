@@ -12,7 +12,7 @@ namespace FigureGameObjects
 		public float StartSpeed => startSpeed;
 		public float MaxSpeed => maxSpeed;
 
-		public float Evaluate(float time)
+		public float EvaluateAcceleration(float time)
 		{
 			float maxAcceleration = MaxSpeed - StartSpeed;
 			return accelerationCurve.Evaluate(time) * maxAcceleration;

@@ -8,25 +8,22 @@ namespace GenerationData
 	[Serializable]
 	public class DirectedFigure : Figure
 	{
-		protected Direction _direction;
-		protected Vector3 _directionVector3;
-
-		public Direction Direction
-		{
-			get => _direction;
-			protected set
-			{
-				_direction = value;
-				_directionVector3 = _direction.ToVector();
-			}
-		}
-
-		public Vector3 DirectionVector3 => _directionVector3;
+		public Direction Direction { get; protected set; }
 
 		public DirectedFigure(FiguresParent parent, Vector3Int coordinatesInFiguresParent) :
 			base(parent, coordinatesInFiguresParent)
 		{
 			parent[coordinatesInFiguresParent] = this;
+		}
+
+		public Vector3Int GetBorderPosition()
+		{
+			Vector3Int result = new Vector3Int();
+			int axis = Direction.GetAxisIndex();
+			Vector3Int directionInVector = Direction.ToVector();
+			result[axis] = directionInVector[axis] >= 0 ? Parent.Length[axis] - 1 : 0;
+			
+			return result;
 		}
 
 		public override bool SetRandomDirection(params Direction[] notAvailableDirections)
@@ -73,7 +70,7 @@ namespace GenerationData
 			{
 				if (Parent[chekingCubeCoordinates] is DirectedFigure checkingCube)
 				{
-					undesirableDirections.Add(checkingCube._direction);
+					undesirableDirections.Add(checkingCube.Direction);
 				}
 			}
 

@@ -30,5 +30,7 @@ namespace GenerationData
 
 		public static Quaternion ToQuaternion(this Direction direction) =>
 			Quaternion.LookRotation(direction.ToVector(), Vector3.zero);
+
+		public static int GetAxisIndex(this Direction direction) => (int)direction % 3;
 	}
 }

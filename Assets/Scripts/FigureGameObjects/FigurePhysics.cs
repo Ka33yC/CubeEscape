@@ -40,6 +40,12 @@ namespace FigureGameObjects
 			set => _transform.localPosition = value;
 		}
 
+		public Quaternion Rotation 
+		{
+			get => _transform.localRotation;
+			set => _transform.localRotation = value;
+		}
+
 		private void Awake()
 		{
 			_transform = GetComponent<Transform>();
@@ -67,7 +73,7 @@ namespace FigureGameObjects
 		private void UpSpeedOnAcceleration()
 		{
 			_nowAccelerationTime += Time.fixedDeltaTime;
-			NowSpeed += NowSpeed * speedParameters.Evaluate(_nowAccelerationTime) * Time.fixedDeltaTime;
+			NowSpeed += NowSpeed * speedParameters.EvaluateAcceleration(_nowAccelerationTime) * Time.fixedDeltaTime;
 		}
 
 		public void StartMoveTo(Vector3 endPosition)

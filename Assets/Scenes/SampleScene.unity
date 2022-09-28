@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b922c6267e54acb80b75650bb14d6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownBetweenEscape: 0.1
+  cooldownBetweenEscape: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
