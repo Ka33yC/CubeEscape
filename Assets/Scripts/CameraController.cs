@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
     private Camera _camera;
     private float _maxApproximate;
 
+    private Vector3 _targetSize;
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -44,6 +46,9 @@ public class CameraController : MonoBehaviour
         Vector3 lookPoint = _transform.rotation * mousePosition;
         Vector3 newPosition = _transform.position + lookPoint * (scrollDelta * approximateSensitivity);
 
+        float magnitudeToTarget = (newPosition - target.position).magnitude;
+        if(magnitudeToTarget > _maxApproximate || magnitudeToTarget < minApproximate) return;
+        
         _transform.position = newPosition;
     }
 
@@ -56,9 +61,10 @@ public class CameraController : MonoBehaviour
         _transform.RotateAround(targetPosition, _transform.right, -mouseDelta.y);
     }
 
-    public void SetSafetyPosition(Vector3 parentSize)
+    public void SetSafetyPosition(Vector3 targetSize)
     {
-        float halfOfParentSizeMagnitude = parentSize.magnitude * 0.5f;
+        _targetSize = targetSize;
+        float halfOfParentSizeMagnitude = _targetSize.magnitude * 0.5f;
 
         minApproximate = halfOfParentSizeMagnitude > minApproximate ? halfOfParentSizeMagnitude : minApproximate;
         _maxApproximate = minApproximate * 3;
