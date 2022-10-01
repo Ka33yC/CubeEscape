@@ -212,10 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fca2474a5bddd04492b8d741e0cf39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeSize: {x: 7, y: 7, z: 7}
-  isDifficult: 1
+  levelFileName: lvl1.json
   cubePrefab: {fileID: 6174506411287803874, guid: 10e35a85672c50748b2152da847ec5c0, type: 3}
-  levelFileName: 
   cameraController: {fileID: 963194229}
 --- !u!114 &720962888
 MonoBehaviour:
@@ -328,6 +326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 720962886}
-  minApproximate: 5
+  minApproximate: 3
   sensitivity: 0.1
   approximateSensitivity: 1

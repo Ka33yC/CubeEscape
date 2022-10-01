@@ -7,7 +7,6 @@ namespace UI.UIStates
 	public abstract class UIBasePage : MonoBehaviour
 	{
 		[SerializeField] protected bool hideByEscape = true;
-		[SerializeField] protected bool showInterAdOnHide = true;
 
 		protected BasePageAnimator _animator;
 
@@ -25,8 +24,6 @@ namespace UI.UIStates
 		}
 
 		public bool IsHideByEscape => hideByEscape;
-
-		public bool IsShowInterAdOnHide => showInterAdOnHide;
 
 		public virtual bool CanPlayAnimation => !_animator.IsNowPlayingAnyAnimation;
 

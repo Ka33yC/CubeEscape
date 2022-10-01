@@ -10,8 +10,8 @@ namespace UI.UIStates
 
 		private void Start()
 		{
-			pageStack.RemoveAt(pageStack.Count - 1);
 			pageStack.Last().PlayShowAnimation();
+			pageStack.RemoveAt(pageStack.Count - 1);
 		}
 		
 		private void Update()
