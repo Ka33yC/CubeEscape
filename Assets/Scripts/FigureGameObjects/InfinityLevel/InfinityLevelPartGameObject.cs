@@ -5,26 +5,26 @@ using UnityEngine;
 
 namespace FigureGameObjects.InfinityLevel
 {
-	public class InfinityLevelPart
+	public class InfinityLevelPartGameObject
 	{
 		private readonly InfinityLevelFigureSpawner _infinityLevelSpawner;
 		private readonly GameObject _infinityLevelPartGameObject;
 
-		private InfinityLevelPart _child;
+		private InfinityLevelPartGameObject _child;
 
 		private InfinityFiguresParent _infinityFiguresParent;
 
-		public event Action<InfinityLevelPart> OnLevelComplete;
+		public event Action<InfinityLevelPartGameObject> OnLevelComplete;
 
-		public InfinityLevelPart(InfinityLevelFigureSpawner infinityLevelSpawner)
+		public InfinityLevelPartGameObject(InfinityLevelFigureSpawner infinityLevelSpawner)
 		{
 			_infinityLevelSpawner = infinityLevelSpawner;
 			_infinityLevelPartGameObject = new GameObject("InfinityLevelPart");
 		}
 
-		public Transform Transform => _infinityLevelPartGameObject.transform;
+		private Transform Transform => _infinityLevelPartGameObject.transform;
 
-		public void SetParent(InfinityLevelPart parent)
+		public void SetParent(InfinityLevelPartGameObject parent)
 		{
 			parent._child = this;
 			Transform.SetParent(parent.Transform, false);

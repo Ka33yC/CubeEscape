@@ -16,10 +16,12 @@ public class CameraController : MonoBehaviour
 
     private Vector3 _targetSize;
 
-    private void Awake()
+    public void Initialize(Vector3 targetSize)
     {
         _transform = GetComponent<Transform>();
         _camera = GetComponent<Camera>();
+
+        SetSafetyPosition(targetSize);
     }
 
     private void Start()
@@ -62,7 +64,7 @@ public class CameraController : MonoBehaviour
         _transform.RotateAround(targetPosition, _transform.right, -mouseDelta.y);
     }
 
-    public void SetSafetyPosition(Vector3 targetSize)
+    private void SetSafetyPosition(Vector3 targetSize)
     {
         _targetSize = targetSize;
         float halfOfParentSizeMagnitude = _targetSize.magnitude * 0.5f;
