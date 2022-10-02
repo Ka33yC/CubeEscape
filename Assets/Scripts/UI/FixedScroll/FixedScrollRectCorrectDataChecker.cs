@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 namespace UI.FixedScroll
 {
-	[RequireComponent(typeof(FixedScrollRect)), ExecuteInEditMode]
+	[ExecuteInEditMode]
 	public class FixedScrollRectCorrectDataChecker : MonoBehaviour
 	{
+		private readonly Vector2 _correctContentPivot = Vector2.zero;
+		private readonly Vector2 _correctContentChildPivot = new Vector2(0.5f, 1);
+
+		
 		private ScrollRect _scrollView;
 		private RectTransform _contentTransform;
+
 		
 		private void Start()
 		{
@@ -24,17 +29,17 @@ namespace UI.FixedScroll
 
 		private void CheckForErrorPivot()
 		{
-			if (_contentTransform.pivot != Vector2.up)
+			if (_contentTransform.pivot != _correctContentPivot)
 			{
-				Debug.LogError("Pivot of Content must be Vector2(0, 1)");
+				Debug.LogError($"Pivot of Content must be {_correctContentPivot}");
 			}
 
 			for (int i = 0; i < _contentTransform.childCount; i++)
 			{
 				RectTransform child = (RectTransform) _contentTransform.GetChild(i);
-				if (child.pivot == Vector2.up) continue;
+				if (child.pivot == _correctContentChildPivot) continue;
 				
-				Debug.LogError($"Pivot of {child} must be Vector2(0, 1)");
+				Debug.LogError($"Pivot of {child} must be {_correctContentChildPivot}");
 			}
 		}
 	}
