@@ -21,6 +21,7 @@ namespace UI.Animations
 		{
 			_canvasGroup = GetComponent<CanvasGroup>();
 			_nowAnimation = DOTween.Sequence();
+			_nowAnimation.Complete();
 			if (!DisableOnInitialize) return;
 			
 			gameObject.SetActive(false);
